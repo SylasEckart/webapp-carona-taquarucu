@@ -108,8 +108,8 @@ Ride "1" -- "0..1" GroupChat : "has"
 
 note right of Ride
   Somente Usuarios com veículos podem oferecer corridas,
-  Chat é criado wuando a corrida está a 1 hora do horário de partida
-  Chat é fechado e mensagens são deletadas 1 hora depois do horário de partida
+  Chat é criado quando dá 1 hora antes do horário da carona
+  Chat é fechado e mensagens são deletadas 1 hora depois do horário do final da chegada da carona
 end note
 @enduml
 ```

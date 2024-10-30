@@ -19,9 +19,11 @@ import Brightness7Icon from '@mui/icons-material/Brightness7'
 import IconButton from '@mui/material/IconButton'
 import { isLocationWithinRange, login, signUp } from '@/services/supabase/client'
 import dynamic from 'next/dynamic'
-// import LoginMap from '@/components/maps/LoginMap'
+// import CoverageMap from '@/components/maps/CoverageMap'
 
+// const CoverageMap = dynamic(() => import('@/components/maps/CoverageMap'), { ssr: false });
 const LoginMap = dynamic(() => import('@/components/maps/LoginMap'), { ssr: false });
+// const InteractiveMap = dynamic(() => import('@/components/maps/InteractiveMap'), { ssr: false });
 
 
 export default function LoginPage() {
@@ -35,7 +37,8 @@ export default function LoginPage() {
   const [loading, setLoading] = React.useState(false)
   const [darkMode, setDarkMode] = React.useState(false)
   const [mapCenter, setMapCenter] = React.useState<[number, number]>([-10.313573823214446, -48.15836083561156])
-  const [mapMarkerPosition, setMapMarkerPosition] = React.useState<[number, number]>([-10.313573823214446, -48.15836083561156])
+  const [mapMarkerPosition, setMapMarkerPosition] = React.useState<[number, number] | null>(null)
+  const [mapMarkerPopupText, setMapMarkerPopupText] = React.useState('Área de cobertura do App')
 
   const router = useRouter()
 
@@ -124,6 +127,7 @@ export default function LoginPage() {
 
           setMapCenter([position.coords.latitude, position.coords.longitude])
           setMapMarkerPosition([position.coords.latitude, position.coords.longitude])
+          setMapMarkerPopupText('Você está aqui')
 
           if (error) {
             setError('Error verifying location. Please try again.')
@@ -234,14 +238,21 @@ export default function LoginPage() {
                   />
                 )}
                 {
-                    <LoginMap
-                      key={locationVerified ? 'verified' : 'unverified'}
-                      center={mapCenter}
-                      zoom={16}
-                      height="250px"
-                      width="100%"
-                      markerPosition={mapMarkerPosition}
-                    />
+                  //   <InteractiveMap
+                  //   initialCenter={mapCenter}
+                  //   initialZoom={15}
+                  //   markerPopupText="Você está aqui"
+                  //   height="250px"
+                  //   width="100%"
+                  // />
+                  <LoginMap
+                    center={mapCenter}
+                    markerPosition={mapMarkerPosition ? mapMarkerPosition : undefined}
+                    markerPopupText={mapMarkerPopupText}
+                    height="250px"
+                    width="100%"
+                  />
+                  // <CoverageMap />
                 }
                 {(
                   <Button
