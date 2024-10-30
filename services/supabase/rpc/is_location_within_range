@@ -1,0 +1,17 @@
+CREATE OR REPLACE FUNCTION is_location_within_range(
+  lat DOUBLE PRECISION,
+  long DOUBLE PRECISION,
+  max_distance DOUBLE PRECISION
+) RETURNS BOOLEAN AS $$
+BEGIN
+  -- ponto de referencia (praça maracaipe)
+  RETURN ST_DWithin(
+    ST_SetSRID(ST_MakePoint(long, lat), 4326)::geography,
+    ST_SetSRID(ST_MakePoint(-48.15876853139953,-10.313320541441682), 4326)::geography,
+    max_distance
+  );
+END;
+$$ LANGUAGE plpgsql;
+
+
+, , 
