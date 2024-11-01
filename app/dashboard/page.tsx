@@ -106,10 +106,6 @@ export default function Dashboard() {
                 position: 'relative',
               }}
             >
-              <PlaceIcon sx={{ fontSize: 100, color: alpha('#6200EE', 0.2), position: 'absolute' }} />
-              <Typography variant="h4" color="primary" sx={{ fontWeight: 'bold', zIndex: 1 }}>
-                Where to?
-              </Typography>
            {location && user && <UserMap user={user} location={[location.lat,location.lng]} key={user.email} onRequest={(console.log)}  />}
 
             </Paper>
