@@ -35,12 +35,10 @@ const LoginMap: React.FC<LoginMapProps> = ({
   const fixedRadius = 100000
   const coverageKey = "coverage-circle"; 
 
-  const { mapRef, showCoverage, hideOverlay, showOverlay,addMarker } = useMap({
+  const { mapRef, showCoverage, addMarker } = useMap({
     center: center,
     zoom: zoom
   });
-
-  console.log(hideOverlay, showOverlay)
 
   // const [isCircleVisible, setIsCircleVisible] = useState(true);
 

@@ -17,16 +17,16 @@ import LocationOnIcon from '@mui/icons-material/LocationOn'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
 import IconButton from '@mui/material/IconButton'
-import { isLocationWithinRange, login, signUp } from '@/services/supabase/client'
+import { isLocationWithinRange} from '@/services/supabase/client/MapsService'
 import dynamic from 'next/dynamic'
-// import CoverageMap from '@/components/maps/CoverageMap'
+import { login, signUp } from '@/services/supabase/client/Auth'
+import { useLocationContext } from '../context/LocationContext'
 
-// const CoverageMap = dynamic(() => import('@/components/maps/CoverageMap'), { ssr: false });
 const LoginMap = dynamic(() => import('@/components/maps/LoginMap'), { ssr: false });
-// const InteractiveMap = dynamic(() => import('@/components/maps/InteractiveMap'), { ssr: false });
 
 
 export default function LoginPage() {
+  const {setLocation, setUser} = useLocationContext()
   const [isLogin, setIsLogin] = React.useState(true)
   const [name, setName] = React.useState('')
   const [email, setEmail] = React.useState('')
@@ -94,11 +94,12 @@ export default function LoginPage() {
       }
 
     if (isLogin) {
-      const { error } = await login(email, password)
+      const { data:{user},error } = await login(email, password)
 
       if (error) {
         setError(error)
       } else {
+        setUser(user)
         router.push('/dashboard')
       }
     } else {
@@ -121,20 +122,23 @@ export default function LoginPage() {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
-            console.log('lat,long',position.coords.latitude, position.coords.longitude)
-          if (!position.coords.latitude || !position.coords.longitude) return setError('Não foi possível obter sua localização. Por favor, tente novamente.')
+          if (!position.coords.latitude || !position.coords.longitude) return setError('Não foi possível obter sua localização. Por favor, habilite sua localização e tente novamente.')
+          
           const { data, error } = await isLocationWithinRange(position.coords.latitude, position.coords.longitude)
 
           setMapCenter([position.coords.latitude, position.coords.longitude])
           setMapMarkerPosition([position.coords.latitude, position.coords.longitude])
+          setLocation({lat:position.coords.latitude ,lng:position.coords.longitude})
           setMapMarkerPopupText('Você está aqui')
 
           if (error) {
-            setError('Error verifying location. Please try again.')
+            setError('Error ao consultar a localização. Por favor, tente novamente.')
           } else if (data) {
             setLocationVerified(true)
+            
           } else {
-            setError('You must be within 100km of our service area to sign up.')
+            setLocationVerified(true)
+            setError('Você precisa estar na nossa área de cobertura para usar os serviços')
           }
           setLoading(false)
         },

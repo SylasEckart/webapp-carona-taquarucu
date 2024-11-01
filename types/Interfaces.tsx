@@ -1,11 +1,11 @@
 
-enum HelpType {
+export enum HelpType {
     Company = 'company',
     Money = 'money',
     Gas = 'gas'
   }
   
-enum RequestType {
+export enum RequestType {
     InTransit = 'in_transit',
     Scheduled = 'scheduled'
   }
