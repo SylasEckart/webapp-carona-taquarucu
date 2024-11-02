@@ -2,6 +2,7 @@ import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import LayoutClient from "./LayoutClient";
 import { ThemeProvider } from "next-themes";
+import { fetchUser } from "@/services/supabase/server/Auth";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -21,6 +22,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
 
+  const {data, error} = await fetchUser()
+  if(error) {
+    console.log(error)
+  }
+
   return (
     <html lang="pt-br" className={GeistSans.className} suppressHydrationWarning>
     <body className="bg-background text-foreground">
@@ -31,9 +37,10 @@ export default async function RootLayout({
           disableTransitionOnChange
         >      
 
-      <LayoutClient>
+      <LayoutClient email={data?.user?.email}>
       {children}
       </LayoutClient>
+
       </ThemeProvider>
       </body>
     </html>

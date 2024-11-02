@@ -7,12 +7,13 @@ export async function middleware(request: NextRequest) {
   // Check if the device is mobile
   const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(userAgent);
 
-  // Redirect non-mobile users to an unsupported device page
   if (!isMobile && !request.nextUrl.pathname.startsWith('/sem-suporte')) {
     return NextResponse.redirect(new URL('/sem-suporte', request.url));
   }
-
-  // Continue to update session for mobile users
+  if(isMobile && request.nextUrl.pathname.startsWith('/sem-suporte')) {
+    return NextResponse.redirect(new URL('/', request.url));
+  }
+  
   return await updateSession(request);
 }
 

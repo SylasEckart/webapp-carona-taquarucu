@@ -1,34 +1,57 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from 'react';
+import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction, useEffect } from 'react';
 import { User, Ride } from '@/types/Interfaces';
+import { fetchUserData } from '@/services/supabase/client/User';
 
 type LocationType = { lat: number; lng: number } | undefined;
 
 interface LocationContextProps {
+  contextLoading: boolean;
   location: LocationType;
   setLocation: Dispatch<SetStateAction<LocationType>>;
   user?: User | null;
-  setUser: Dispatch<SetStateAction<any | null>>;
+  setUser: Dispatch<SetStateAction<User | undefined>>;
   ride?: Ride | null;
-  setRide: Dispatch<SetStateAction<Ride | null>>;
+  setRide: Dispatch<SetStateAction<Ride | undefined>>;
 }
 
 const LocationContext = createContext<LocationContextProps | undefined>(undefined);
 
 interface LocationProviderProps {
   children: ReactNode;
-  user?: User;
+  userEmail?: string;
 }
 
-export const LocationProvider: React.FC<LocationProviderProps> = ({ children, user }) => {
+export const LocationProvider: React.FC<LocationProviderProps> = ({ children, userEmail }) => {
+
+  const [loading, setLoading] = useState(true);
   const [location, setLocation] = useState<LocationType>(undefined);
-  const [ride, setRide] = useState<Ride | null>(null);
-  const [userState, setUser] = useState<User | null>(user ?? null);
+  const [ride, setRide] = useState<Ride | undefined>(undefined);
+  const [user, setUser] = useState<User | undefined>(undefined);
+
+  useEffect(() => {
+    if (userEmail && !user) {
+      const fetchData = async () => {
+        try {
+          const {data} = await fetchUserData(userEmail);
+          setUser(data);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchData();
+        } else {
+      setLoading(false);
+    }
+  }, [userEmail,user]);
 
   return (
-    <LocationContext.Provider value={{ location, setLocation, user: userState, setUser, ride, setRide }}>
+    <LocationContext.Provider value={{ contextLoading:loading, location, setLocation, user,setUser, ride, setRide }}>
       {children}
     </LocationContext.Provider>
   );

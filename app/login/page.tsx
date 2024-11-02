@@ -4,23 +4,23 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { ThemeProvider, CssBaseline, Container, Box, Card, CardContent, Typography, IconButton } from '@mui/material';
 import { Brightness4 as Brightness4Icon, Brightness7 as Brightness7Icon } from '@mui/icons-material';
-import dynamic from 'next/dynamic';
 import { login, signUp } from '@/services/supabase/client/Auth';
 import { useLocationContext } from '../context/LocationContext';
 import useAuthForm from '@/hooks/useAuthForm';
 import useDarkMode from '@/hooks/useDarkMode';
-import useLocationVerification from '@/hooks/useLocationVerification';
+import useLocationVerification from '@/hooks/useLocationAction';
 import { AuthForm } from './AuthForm';
+import { LoginMapComponent } from '@/components/maps/MapWrapper';
 
-const LoginMap = dynamic(() => import('@/components/maps/LoginMap'), { ssr: false });
 
 export default function LoginPage() {
-  const { setLocation, setUser } = useLocationContext();
   const router = useRouter();
+  const { setLocation} = useLocationContext();
+
 
   const { theme, toggleTheme } = useDarkMode();
   const { isLogin, formData, error, handleInputChange, validateFields, toggleLoginMode, setError,setMessage,message } = useAuthForm({ isLogin: true });
-  const { locationVerified, verifyLocation, locationData } = useLocationVerification(setLocation);
+  const { locationVerified, verifyLocation, myLocation } = useLocationVerification(setLocation);
 
   const [loading, setLoading] = React.useState(false);
 
@@ -45,9 +45,9 @@ export default function LoginPage() {
     if (isLogin) {
       const { data: { user }, errorMessage } = await login(formData.email, formData.password);
       if (errorMessage) setError(errorMessage);
-      else {
-        setUser(user);
+      else if(user) {
         router.push('/dashboard');
+        router.refresh();
       }
     } else {
       const { errorMessage } = await signUp(formData.email, formData.password, formData.name, formData.phone);
@@ -57,6 +57,9 @@ export default function LoginPage() {
 
     setLoading(false);
   };
+  
+  const center: [number, number] = myLocation.lat ? [myLocation.lat, myLocation.lng] : [-10.313573823214446, -48.15836083561156]; 
+  const markerPosition: [number, number] | undefined = myLocation.lat ? [myLocation.lat, myLocation.lng] : undefined;
 
   return (
     <ThemeProvider theme={theme}>
@@ -103,13 +106,8 @@ export default function LoginPage() {
                 toggleLoginMode={toggleLoginMode}
               />
 
-              <Box sx={{ mt: 3, mb: 3, borderRadius: 2, overflow: 'hidden' }}>
-                <LoginMap
-                  center={locationData.lat ? [locationData.lat, locationData.lng] : [-10.313573823214446, -48.15836083561156]}
-                  markerPosition={locationData.lat ? [locationData.lat, locationData.lng] : undefined}
-                  height="200px"
-                  width="100%"
-                />
+              <Box sx={{ mt: 3, mb: 3, borderRadius: 2, overflow: 'hidden' }}>                
+                <LoginMapComponent key={myLocation.toString()} center={center} markerPosition={markerPosition} />
               </Box>
             </CardContent>
           </Card>

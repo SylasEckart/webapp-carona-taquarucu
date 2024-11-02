@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import { useLocationContext } from '../context/LocationContext';
 import {
   Box,
@@ -12,8 +12,8 @@ import {
 } from '@mui/material'
 import { useRouter } from 'next/navigation';
 import useDarkMode from '@/hooks/useDarkMode';
-import { Header } from './Header';
-import { MapComponent } from './MapComponent';
+import  Header from '@/components/layout/Header';
+import { UserMapComponent } from '../../components/maps/MapWrapper';
 import { LocationInputs } from './LocationInputs';
 import { QuickActions } from './QuickActions';
 import RideTabs from './RideTabs';
@@ -28,14 +28,13 @@ export default function Dashboard() {
   ])
 
   const router = useRouter()
-  const { user, location } = useLocationContext()
+  const { user, location,contextLoading } = useLocationContext()
   const { theme, toggleTheme } = useDarkMode()
 
   useEffect(() => {
-    if (!user || !user.email) {
-      router.replace('/login');
-    }
-  }, [router]);
+    if(contextLoading) return;
+    console.log('user',user)
+  }, [router,user]);
 
   const handleSelectRide = (ride: { id: string, type: string, time: string, remainingSeats: number }) => {
     console.log('Selected ride:', ride);
@@ -52,7 +51,7 @@ export default function Dashboard() {
         <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
           <Fade in={true} timeout={1000}>
             <Box sx={{ mb: 2 }}>
-              <MapComponent user={user} location={location ? [location.lat, location.lng] : [-10.313573823214446, -48.15836083561156]} />
+              <UserMapComponent user={user} location={location ? [location.lat, location.lng] : [-10.313573823214446, -48.15836083561156]} />
             </Box>
           </Fade>
 

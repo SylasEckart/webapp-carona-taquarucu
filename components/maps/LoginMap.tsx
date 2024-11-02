@@ -57,9 +57,7 @@ const LoginMap: React.FC<LoginMapProps> = ({
   }, [markerPosition, addMarker, markerPopupText]);
 
   
-  return <div>
-      <div ref={mapRef}  style={{ height, width }} />
-    </div>
+  return <div ref={mapRef}  style={{ height, width }} />
 };
 
 export default LoginMap;
