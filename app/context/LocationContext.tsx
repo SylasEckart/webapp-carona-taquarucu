@@ -35,21 +35,26 @@ export const LocationProvider: React.FC<LocationProviderProps> = ({ children, us
     if (userEmail && !user) {
       const fetchData = async () => {
         try {
-          const {data,error} = await fetchUserData(userEmail);
-          if(!data) throw new Error('User not found');
-          if(data &&!error) setUser(data as User);
+          const { data, error } = await fetchUserData(userEmail);
+          if (error) {
+            throw new Error(`Error fetching user data: ${error.message}`);
+          }
+          if (!data) {
+            throw new Error('User not found');
+          }
+          setUser(data as User);
         } catch (error) {
-          console.error(error);
+          console.error('Fetch user data failed:', error);
         } finally {
           setLoading(false);
         }
       };
-
+  
       fetchData();
-        } else {
+    } else {
       setLoading(false);
     }
-  }, [userEmail,user]);
+  }, [userEmail, user]);
 
   return (
     <LocationContext.Provider value={{ contextLoading:loading, location, setLocation, user,setUser, ride, setRide }}>
