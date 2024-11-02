@@ -46,6 +46,7 @@ export default function LoginPage() {
       const { data: { user }, errorMessage } = await login(formData.email, formData.password);
       if (errorMessage) setError(errorMessage);
       else if(user) {
+        setMessage('Logado com sucesso, redirecionando...');
         router.push('/dashboard');
         router.refresh();
       }
