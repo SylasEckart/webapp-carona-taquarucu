@@ -1,9 +1,8 @@
-
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from 'react';
+import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction, useEffect } from 'react';
 import { User, Ride } from '@/types/Interfaces';
-// import { fetchUserData } from '@/services/supabase/client/User';
+import { fetchUserData } from '@/services/supabase/client/User';
 
 type LocationType = { lat: number; lng: number } | undefined;
 
@@ -25,46 +24,40 @@ interface LocationProviderProps {
 }
 
 export const LocationProvider: React.FC<LocationProviderProps> = ({ children, userEmail }) => {
-
-
-  console.log('userEmail',userEmail)
-  const [loading] = useState(true);
+  console.log('userEmail', userEmail);
+  const [loading, setLoading] = useState(true);
   const [location, setLocation] = useState<LocationType>(undefined);
   const [ride, setRide] = useState<Ride | undefined>(undefined);
   const [user, setUser] = useState<User | undefined>(undefined);
 
-  // useEffect(() => {
-  //   if (userEmail && !user) {
-  //     const fetchData = async () => {
-  //       try {
-  //         const { data, error } = await fetchUserData(userEmail);
-  //         console.log('data',data,error)
-  //         if (error) {
-  //           throw new Error(`Error fetching user data: ${error.message}`);
-  //         }
-  //         if (!data) {
-  //           throw new Error('User not found');
-  //         }
-  //         if(!error){
-  //           console.log('data',data)
-  //           setUser(data);
+  useEffect(() => {
+    if (typeof window !== 'undefined' && userEmail && !user) {
+      const fetchData = async () => {
+        try {
+          const { data, error } = await fetchUserData(userEmail);
+          console.log('data', data, error);
+          if (error) {
+            throw new Error(`Error fetching user data: ${error.message}`);
+          }
+          if (!data) {
+            throw new Error('User not found');
+          }
+          setUser(data);
+        } catch (error) {
+          console.error('Fetch user data failed:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
 
-  //         }
-  //       } catch (error) {
-  //         console.error('Fetch user data failed:', error);
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     };
-  
-  //     fetchData();
-  //   } else {
-  //     setLoading(false);
-  //   }
-  // }, [userEmail, user]);
+      fetchData();
+    } else {
+      setLoading(false);
+    }
+  }, [userEmail, user]);
 
   return (
-    <LocationContext.Provider value={{ contextLoading:loading, location, setLocation, user,setUser, ride, setRide }}>
+    <LocationContext.Provider value={{ contextLoading: loading, location, setLocation, user, setUser, ride, setRide }}>
       {children}
     </LocationContext.Provider>
   );
