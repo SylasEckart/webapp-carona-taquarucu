@@ -56,19 +56,9 @@ const LoginMap: React.FC<LoginMapProps> = ({
     }
   }, [markerPosition, addMarker, markerPopupText]);
 
-  // const toggleCircleVisibility = () => {
-  //   if (isCircleVisible) {
-  //     hideOverlay(coverageKey); 
-  //   } else {
-  //     showOverlay(coverageKey); 
-  //   }
-  //   setIsCircleVisible(!isCircleVisible);
-  // };
-
+  
   return <div>
       <div ref={mapRef}  style={{ height, width }} />
-      <div style={{ marginTop: "10px" }}>
-      </div>
     </div>
 };
 
