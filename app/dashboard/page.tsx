@@ -12,7 +12,7 @@ import {
 } from '@mui/material'
 import { useRouter } from 'next/navigation';
 import useDarkMode from '@/hooks/useDarkMode';
-import  Header from '@/components/layout/Header';
+import  Header from '@/components/layout/header';
 import { UserMapComponent } from '../../components/maps/MapWrapper';
 import { LocationInputs } from './LocationInputs';
 import { QuickActions } from './QuickActions';
