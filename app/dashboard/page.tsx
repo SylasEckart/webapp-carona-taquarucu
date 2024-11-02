@@ -46,7 +46,7 @@ export default function Dashboard() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box sx={{ flexGrow: 1, height: '100vh', display: 'flex', flexDirection: 'column', bgcolor: 'background.default' }}>
-        <Header toggleTheme={toggleTheme} isDarkMode={theme.palette.mode === 'dark'} />
+        <Header toggleTheme={toggleTheme} isDarkMode={theme.palette.mode === 'dark'} router={router} />
 
         <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
           <Fade in={true} timeout={1000}>

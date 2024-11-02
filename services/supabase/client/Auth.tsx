@@ -15,6 +15,12 @@ export const login = async (email: string, password: string) => {
     return { data,errorMessage:error && error.code && errorHandler(error.code) };
 };
 
+
+export const logout = async () => {
+    const { error } = await supabaseClient.auth.signOut();
+    return {errorMessage:error && error.code && errorHandler(error.code)};
+};
+
 export const signUp = async (email: string, password: string, name: string, phone: string) => {
     
     const { data: signUpData, error: signUpError } = await supabaseClient.auth.signUp({
