@@ -19,7 +19,7 @@ export default function LoginPage() {
   const router = useRouter();
 
   const { theme, toggleTheme } = useDarkMode();
-  const { isLogin, formData, error, handleInputChange, validateFields, toggleLoginMode, setError } = useAuthForm({ isLogin: true });
+  const { isLogin, formData, error, handleInputChange, validateFields, toggleLoginMode, setError,setMessage,message } = useAuthForm({ isLogin: true });
   const { locationVerified, verifyLocation, locationData } = useLocationVerification(setLocation);
 
   const [loading, setLoading] = React.useState(false);
@@ -52,7 +52,7 @@ export default function LoginPage() {
     } else {
       const { errorMessage } = await signUp(formData.email, formData.password, formData.name, formData.phone);
       if (errorMessage) setError(errorMessage);
-      else setError('Check your email to confirm your account.');
+      else setMessage('Verifique seu email para ativar sua conta.');
     }
 
     setLoading(false);
@@ -94,6 +94,7 @@ export default function LoginPage() {
                 isLogin={isLogin}
                 formData={formData}
                 error={error}
+                message={message}
                 locationVerified={locationVerified ? locationVerified : false}
                 loading={loading}
                 handleInputChange={handleInputChange}

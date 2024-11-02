@@ -13,6 +13,7 @@ interface AuthFormProps {
     phone?: string;
   };
   error: string;
+  message: string;
   locationVerified: boolean;
   loading: boolean
   handleInputChange: (field: "name"  | "email" | "password" | "phone", value: string) => void;
@@ -25,6 +26,7 @@ export function AuthForm({
   isLogin,
   formData,
   error,
+  message,
   locationVerified,
   loading,
   handleInputChange,
@@ -98,7 +100,8 @@ export function AuthForm({
       />
       }
       
-      {error && <Alert severity="error" sx={{ mt: 2, mb: 2, borderRadius: 2 }}>{error}</Alert>}
+      {error ? <Alert severity="error" sx={{ mt: 2, mb: 2, borderRadius: 2 }}>{error}</Alert>:
+      message && <Alert severity="success" sx={{ mt: 2, mb: 2, borderRadius: 2 }}>{message}</Alert>}
       {locationVerified && (
         <SubmitButton isLogin={isLogin} loading={loading} />
       )}

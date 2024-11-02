@@ -5,6 +5,7 @@ const useAuthForm = (initialState: { isLogin: boolean }) => {
   const [isLogin, setIsLogin] = useState(initialState.isLogin);
   const [formData, setFormData] = useState({ name: '', email: '', password: '', phone: '' });
   const [error, setError] = useState<string>('');
+  const [message, setMessage] = useState<string>('');
 
   const handleInputChange = (field: keyof typeof formData, value: string) => {
     setFormData({ ...formData, [field]: value });
@@ -25,6 +26,8 @@ const useAuthForm = (initialState: { isLogin: boolean }) => {
     isLogin,
     formData,
     error,
+    message,
+    setMessage,
     handleInputChange,
     validateFields,
     toggleLoginMode,
