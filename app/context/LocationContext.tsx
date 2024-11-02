@@ -11,9 +11,9 @@ interface LocationContextProps {
   contextLoading: boolean;
   location: LocationType;
   setLocation: Dispatch<SetStateAction<LocationType>>;
-  user?: User | null;
+  user?: User | undefined;
   setUser: Dispatch<SetStateAction<User | undefined>>;
-  ride?: Ride | null;
+  ride?: Ride | undefined;
   setRide: Dispatch<SetStateAction<Ride | undefined>>;
 }
 
