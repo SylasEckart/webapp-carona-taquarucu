@@ -4,7 +4,7 @@
 import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from 'react';
 import { User, Ride } from '@/types/Interfaces';
 
-type LocationType = { lat: number; lng: number } | null;
+type LocationType = { lat: number; lng: number } | undefined;
 
 interface LocationContextProps {
   location: LocationType;
@@ -23,7 +23,7 @@ interface LocationProviderProps {
 }
 
 export const LocationProvider: React.FC<LocationProviderProps> = ({ children, user }) => {
-  const [location, setLocation] = useState<LocationType>(null);
+  const [location, setLocation] = useState<LocationType>(undefined);
   const [ride, setRide] = useState<Ride | null>(null);
   const [userState, setUser] = useState<User | null>(user ?? null);
 

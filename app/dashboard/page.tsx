@@ -171,13 +171,13 @@ export default function Dashboard() {
                       <Typography variant="subtitle1" color="secondary.main">19:30 <ClockIcon sx={{ mr: 1, color: 'text.secondary' }} /></Typography>
                       
                     </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                    {/* <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
                       <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <ClockIcon sx={{ mr: 1, color: 'text.secondary' }} />
                         <Typography variant="body2" color="text.secondary">5 min away</Typography>
                       </Box>
                       <Typography variant="body2" color="text.secondary">10:30 AM arrival</Typography>
-                    </Box>
+                    </Box> */}
                     <Button variant="contained" fullWidth size="large" sx={{ borderRadius: 8 }}>
                       Escolher Corrida
                     </Button>

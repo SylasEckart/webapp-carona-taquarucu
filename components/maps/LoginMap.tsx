@@ -32,7 +32,7 @@ const LoginMap: React.FC<LoginMapProps> = ({
   width = "100%",
 }) => {
 
-  const fixedRadius = 100000
+  const fixedRadius = 100000;
   const coverageKey = "coverage-circle"; 
 
   const { mapRef, showCoverage, addMarker } = useMap({
@@ -43,12 +43,12 @@ const LoginMap: React.FC<LoginMapProps> = ({
   // const [isCircleVisible, setIsCircleVisible] = useState(true);
 
   const initializeCoverageCircle = useCallback(() => {
-    showCoverage(coverageKey, center, fixedRadius);
-  }, [showCoverage, center, fixedRadius]);
+    showCoverage(coverageKey, [-10.313594934186332, -48.15934788857191], fixedRadius);
+  }, []);
 
   useEffect(() => {
     initializeCoverageCircle();
-  }, [initializeCoverageCircle]);
+  }, []);
 
   useEffect(() => {
     if (markerPosition) {
@@ -66,12 +66,8 @@ const LoginMap: React.FC<LoginMapProps> = ({
   // };
 
   return <div>
-      <div ref={mapRef}  style={{ height, width }} />;
+      <div ref={mapRef}  style={{ height, width }} />
       <div style={{ marginTop: "10px" }}>
-        {/* <p>Radius: {fixedRadius} meters</p> */}
-        {/* <button onClick={toggleCircleVisibility} style={{ marginTop: "10px" }}>
-          {isCircleVisible ? "Esconder Área de Cobertura" : "Mostrar Área de Cobertura"}
-        </button> */}
       </div>
     </div>
 };

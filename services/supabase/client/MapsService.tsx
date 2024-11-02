@@ -7,8 +7,5 @@ export const isLocationWithinRange = async (latitude: number, longitude: number)
         long: longitude,
         max_distance: 100000,
     });
-    if (error) {
-        throw error;
-    }
     return { data,error };
 }

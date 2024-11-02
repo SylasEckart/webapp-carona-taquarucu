@@ -5,6 +5,7 @@
 import { useEffect, useState } from "react";
 import { LocationProvider } from "./context/LocationContext";
 import { fetchUser } from "@/services/supabase/client/Auth";
+import { Backdrop, CircularProgress } from "@mui/material";
 
 
 
@@ -29,19 +30,18 @@ export default function LayoutClient({ children }: LayoutClientProps) {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Backdrop
+    sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+    open={loading}
+  >
+    <CircularProgress color="inherit" />
+  </Backdrop>
   }
-
   return (
        
         <LocationProvider user={user || undefined}>
           <main className="min-h-screen flex flex-col items-center">
-            {/* <div className="flex-1 w-full flex flex-col gap-20 items-center"> */}
-              {/* <div className="flex flex-col gap-20 max-w-5xl p-5"> */}
                 {children}
-              {/* </div> */}
-            {/* <Footer /> */}
-            {/* </div> */}
           </main>
           </LocationProvider>
   )
