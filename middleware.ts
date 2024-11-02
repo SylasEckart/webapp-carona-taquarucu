@@ -10,10 +10,13 @@ export async function middleware(request: NextRequest) {
   if (!isMobile && !request.nextUrl.pathname.startsWith('/sem-suporte')) {
     return NextResponse.redirect(new URL('/sem-suporte', request.url));
   }
+  if(!isMobile && request.nextUrl.pathname.startsWith('/sem-suporte')) {
+    return NextResponse.next();
+  }
   if(isMobile && request.nextUrl.pathname.startsWith('/sem-suporte')) {
     return NextResponse.redirect(new URL('/', request.url));
   }
-  
+
   return await updateSession(request);
 }
 

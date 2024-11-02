@@ -33,14 +33,13 @@ export const updateSession = async (request: NextRequest) => {
       },
     );
 
-    // https://supabase.com/docs/guides/auth/server-side/nextjs
     const user = await supabase.auth.getUser();
 
     if (user.error && request.nextUrl.pathname !== "/login") {
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    if ((request.nextUrl.pathname === "/login" || request.nextUrl.pathname === "/") && !user.error) {
+    if ((request.nextUrl.pathname === "/login" || request.nextUrl.pathname === "/" ) && !user.error) {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
 

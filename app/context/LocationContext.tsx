@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction, useEffect } from 'react';
@@ -25,34 +24,40 @@ interface LocationProviderProps {
 }
 
 export const LocationProvider: React.FC<LocationProviderProps> = ({ children, userEmail }) => {
-
+  console.log('userEmail', userEmail);
   const [loading, setLoading] = useState(true);
   const [location, setLocation] = useState<LocationType>(undefined);
   const [ride, setRide] = useState<Ride | undefined>(undefined);
   const [user, setUser] = useState<User | undefined>(undefined);
 
   useEffect(() => {
-    if (userEmail && !user) {
+    if (typeof window !== 'undefined' && userEmail && !user) {
       const fetchData = async () => {
         try {
-          const {data,error} = await fetchUserData(userEmail);
-          if(!data) throw new Error('User not found');
-          if(data &&!error) setUser(data as User);
+          const { data, error } = await fetchUserData(userEmail);
+          console.log('data', data, error);
+          if (error) {
+            throw new Error(`Error fetching user data: ${error.message}`);
+          }
+          if (!data) {
+            throw new Error('User not found');
+          }
+          setUser(data);
         } catch (error) {
-          console.error(error);
+          console.error('Fetch user data failed:', error);
         } finally {
           setLoading(false);
         }
       };
 
       fetchData();
-        } else {
+    } else {
       setLoading(false);
     }
-  }, [userEmail,user]);
+  }, [userEmail, user]);
 
   return (
-    <LocationContext.Provider value={{ contextLoading:loading, location, setLocation, user,setUser, ride, setRide }}>
+    <LocationContext.Provider value={{ contextLoading: loading, location, setLocation, user, setUser, ride, setRide }}>
       {children}
     </LocationContext.Provider>
   );
