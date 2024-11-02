@@ -35,9 +35,9 @@ export const LocationProvider: React.FC<LocationProviderProps> = ({ children, us
     if (userEmail && !user) {
       const fetchData = async () => {
         try {
-          const {data} = await fetchUserData(userEmail);
+          const {data,error} = await fetchUserData(userEmail);
           if(!data) throw new Error('User not found');
-          if(data) setUser(data as User);
+          if(data &&!error) setUser(data as User);
         } catch (error) {
           console.error(error);
         } finally {
