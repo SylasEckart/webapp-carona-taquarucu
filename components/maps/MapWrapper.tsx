@@ -35,7 +35,7 @@ export const UserMapComponent = React.memo(({ user, location }: UserMapProps) =>
         position: 'relative',
       }}
     >
-      <UserMap user={user} location={location} />
+      <UserMap key={location.toString()} user={user} location={location} />
     </Paper>
   );
 });
@@ -55,7 +55,7 @@ export const LoginMapComponent = React.memo(({markerPosition, center, zoom }: Lo
         position: 'relative',
       }}
     >
-      <LoginMap zoom={zoom} center={center} key={markerPosition?.toString()} markerPosition={markerPosition} height="200px"
+      <LoginMap zoom={zoom} center={center} key="dont-repeat" markerPosition={markerPosition} height="200px"
           width="100%"/>
      </Paper>
   );

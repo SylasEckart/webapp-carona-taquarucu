@@ -3,9 +3,12 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography,  Menu, MenuItem } from '@mui/material';
 import {  Brightness4 as Brightness4Icon, Brightness7 as Brightness7Icon } from '@mui/icons-material';
-import { logout } from '@/services/supabase/client/Auth';
 import CustomAvatar from './CustomAvatar';
 import { useLocationContext } from '@/app/context/LocationContext';
+
+import { logout } from '@/services/supabase/client/Auth';
+import AppLoader from '../ui/AppLoader';
+
 
 interface HeaderProps {
   toggleTheme: () => void;
@@ -16,7 +19,7 @@ interface HeaderProps {
 export default function Header({ toggleTheme, isDarkMode, router, }: HeaderProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null); 
 
-  const {user} = useLocationContext()
+  const {user,contextLoading} = useLocationContext()
 
   const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -29,9 +32,11 @@ export default function Header({ toggleTheme, isDarkMode, router, }: HeaderProps
   const handleLogout = async() => {
     const {errorMessage} = await logout();
     if(errorMessage) console.error('Logout failed:', errorMessage);
-    else router.replace('/login');
+    else{
+      router.refresh();
+    }
   }
-
+  if(contextLoading) return <AppLoader message="Carregando" />
   if(!user) return null;
 
 

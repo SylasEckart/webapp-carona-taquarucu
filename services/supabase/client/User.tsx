@@ -13,3 +13,17 @@ export const fetchUserData = async (email:string) => {
 
     return {data, error};
 }
+
+export const setCurrentUserLocation = async (email:string, location: {lat:number,lng:number}) => {
+    console.log('location',location)
+    const {data, error } = await supabaseClient
+                                .from('users')
+                                .update({
+                                    currentlocation: `POINT(${location.lat}} ${location.lng})`
+                                })
+                                .eq('email',email)
+                                .select('*')
+    console.log('error',error,data)
+    return {data,error};
+}
+

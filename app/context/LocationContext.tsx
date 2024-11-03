@@ -2,11 +2,19 @@
 
 import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction, useEffect } from 'react';
 import { User, Ride } from '@/types/Interfaces';
-import { fetchUserData } from '@/services/supabase/client/User';
+import { fetchUserData, setCurrentUserLocation } from '@/services/supabase/client/User';
 
 type LocationType = { lat: number; lng: number } | undefined;
 
+type modal = {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  children: ReactNode;
+};
 interface LocationContextProps {
+  modal: modal;
+  setModal: Dispatch<SetStateAction<modal>>;
   contextLoading: boolean;
   location: LocationType;
   setLocation: Dispatch<SetStateAction<LocationType>>;
@@ -24,11 +32,11 @@ interface LocationProviderProps {
 }
 
 export const LocationProvider: React.FC<LocationProviderProps> = ({ children, userEmail }) => {
-  console.log('userEmail', userEmail);
   const [loading, setLoading] = useState(true);
   const [location, setLocation] = useState<LocationType>(undefined);
   const [ride, setRide] = useState<Ride | undefined>(undefined);
   const [user, setUser] = useState<User | undefined>(undefined);
+  const [modal,setModal] = useState<modal>({isOpen:false,onClose:()=>{},title:'',children:null});
 
   useEffect(() => {
     if (typeof window !== 'undefined' && userEmail && !user) {
@@ -42,6 +50,7 @@ export const LocationProvider: React.FC<LocationProviderProps> = ({ children, us
           if (!data) {
             throw new Error('User not found');
           }
+          console.log('data', data,location);
           setUser(data);
         } catch (error) {
           console.error('Fetch user data failed:', error);
@@ -56,8 +65,14 @@ export const LocationProvider: React.FC<LocationProviderProps> = ({ children, us
     }
   }, [userEmail, user]);
 
+  useEffect(() => {
+    if (location && user) {
+      setCurrentUserLocation(user.email, location);
+    }
+  }, [location]);
+
   return (
-    <LocationContext.Provider value={{ contextLoading: loading, location, setLocation, user, setUser, ride, setRide }}>
+    <LocationContext.Provider value={{ contextLoading: loading, location, setLocation, user, setUser, ride, setRide,modal,setModal }}>
       {children}
     </LocationContext.Provider>
   );

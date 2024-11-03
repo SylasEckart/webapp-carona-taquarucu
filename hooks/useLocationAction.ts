@@ -4,8 +4,8 @@ import { isLocationWithinRange } from '@/services/supabase/client/LocationServic
 const useLocationActions = (setLocation: (loc: { lat: number, lng: number }) => void) => {
   const [locationVerified, setLocationVerified] = useState<boolean | undefined>(undefined);
   const [error, setError] = useState<string>('');
-  const [myLocation, setmyLocation] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 });
   const [destination, setDestination] = useState<[number, number] | undefined>(undefined);
+
 
   const verifyLocation = async () => {
     setError('');
@@ -17,7 +17,6 @@ const useLocationActions = (setLocation: (loc: { lat: number, lng: number }) => 
 
           const locationObj = { lat: latitude, lng: longitude };
           setLocation(locationObj);
-          setmyLocation(locationObj);
 
           const { data, error } = await isLocationWithinRange(latitude, longitude);
           console.log('data',data,error)
@@ -28,6 +27,7 @@ const useLocationActions = (setLocation: (loc: { lat: number, lng: number }) => 
            else {
             if(!data) setError('Não está na area de cobertura');
             setLocationVerified(Boolean(data));
+            
           }
         },
         () => setError('Por Favor habilite o serviço de geolocalização')
@@ -64,7 +64,7 @@ const useLocationActions = (setLocation: (loc: { lat: number, lng: number }) => 
     }
   };
 
-  return { locationVerified, verifyLocation, error,myLocation,searchLocation, destination, setDestination };
+  return { locationVerified, verifyLocation, error,searchLocation, destination, setDestination };
 };
 
 export default useLocationActions;
