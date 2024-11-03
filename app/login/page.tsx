@@ -10,18 +10,21 @@ import useAuthForm from '@/hooks/useAuthForm';
 import useDarkMode from '@/hooks/useDarkMode';
 import useLocationVerification from '@/hooks/useLocationAction';
 import { AuthForm } from './AuthForm';
+import {motion} from 'framer-motion';
 import { LoginMapComponent } from '@/components/maps/MapWrapper';
 import { taquarucuSquarelocation } from '@/types/constants';
+import AppLoader from '@/components/ui/AppLoader';
 
 
 export default function LoginPage() {
   const router = useRouter();
-  const { setLocation} = useLocationContext();
+  const { setLocation,location:myLocation,contextLoading} = useLocationContext();
 
+  // if(!contextLoading && !myLocation) return null;
 
   const { theme, toggleTheme } = useDarkMode();
   const { isLogin, formData, error, handleInputChange, validateFields, toggleLoginMode, setError,setMessage,message } = useAuthForm({ isLogin: true });
-  const { locationVerified, verifyLocation, myLocation } = useLocationVerification(setLocation);
+  const { locationVerified, verifyLocation} = useLocationVerification(setLocation);
 
   const [loading, setLoading] = React.useState(false);
 
@@ -59,10 +62,12 @@ export default function LoginPage() {
 
     setLoading(false);
   };
+
+  if(contextLoading) return <AppLoader message='Carregando' />;
   
-  const center: [number, number] = myLocation.lat ? [myLocation.lat, myLocation.lng] : taquarucuSquarelocation; 
-  const markerPosition: [number, number] | undefined = myLocation.lat ? [myLocation.lat, myLocation.lng] : undefined;
-  const zoom = myLocation.lat ? 15 : 13;
+  const center: [number, number] = myLocation?.lat ? [myLocation?.lat, myLocation?.lng] : taquarucuSquarelocation; 
+  const markerPosition: [number, number] | undefined = myLocation?.lat ? [myLocation?.lat, myLocation?.lng] : undefined;
+  const zoom = myLocation?.lat ? 15 : 13;
 
   return (
     <ThemeProvider theme={theme}>
@@ -90,7 +95,7 @@ export default function LoginPage() {
           <Card sx={{ width: '100%', maxWidth: '100%', borderRadius: 0, boxShadow: 'none', height: '100vh', overflowY: 'auto' }}>
             <CardContent sx={{ p: 3 }}>
               <Typography component="h1" variant="h4" align="center" gutterBottom sx={{ fontWeight: 'bold', mb: 3 }}>
-                {isLogin ? 'Login' : 'Sign Up'}
+                {isLogin ? 'Login' : 'Cadastro'}
               </Typography>
               <Typography variant="body1" align="center" color="text.secondary" gutterBottom sx={{ mb: 4 }}>
                 {isLogin ? 'Bem vindo de volta!' : 'Crie uma conta para começar'}
@@ -108,9 +113,14 @@ export default function LoginPage() {
                 verifyLocation={verifyLocation}
                 toggleLoginMode={toggleLoginMode}
               />
-
               <Box  sx={{ mt: 3, mb: 3, borderRadius: 2, overflow: 'hidden' }}>                
+
+              <motion.div
+      whileHover={{ scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 300 }}
+    >
                 <LoginMapComponent zoom={zoom} center={center} markerPosition={markerPosition} />
+                </motion.div>
               </Box>
             </CardContent>
           </Card>

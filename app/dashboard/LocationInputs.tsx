@@ -1,62 +1,48 @@
-import React from 'react';
-import { Paper, InputBase, IconButton } from '@mui/material';
-import { alpha } from '@mui/material/styles';
-import { Search as SearchIcon, Place as PlaceIcon } from '@mui/icons-material';
+'use client'
+
+import { Input } from '@mui/material'
+import { motion } from 'framer-motion'
+import { Search, MapPin } from 'lucide-react'
+// import { Input } from '@/components/ui/input'
 
 interface LocationInputsProps {
-  pickup: string;
-  setPickup: (value: string) => void;
-  destination: string;
-  setDestination: (value: string) => void;
+  pickup: string
+  setPickup: (value: string) => void
+  destination: string
+  setDestination: (value: string) => void
 }
 
-export function LocationInputs({ pickup, setPickup, destination, setDestination }: LocationInputsProps) {
+export default function LocationInputs({
+  pickup,
+  setPickup,
+  destination,
+  setDestination,
+}: LocationInputsProps) {
   return (
-    <>
-      <Paper
-        component="form"
-        elevation={0}
-        sx={(theme) => ({
-          p: '2px 4px',
-          display: 'flex',
-          alignItems: 'center',
-          mb: 2,
-          bgcolor: alpha(theme.palette.primary.main, 0.05),
-          borderRadius: 8
-        })}
-      >
-        <IconButton sx={{ p: '10px' }} aria-label="pickup">
-          <PlaceIcon color="primary" />
-        </IconButton>
-        <InputBase
-          sx={{ ml: 1, flex: 1 }}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="space-y-4"
+    >
+      <div className="relative">
+        <MapPin className="absolute left-3 top-2 h-4 w-4 text-muted-foreground" />
+        <Input
+          className="pl-9 w-full"
           placeholder="Lugar de Partida"
           value={pickup}
           onChange={(e) => setPickup(e.target.value)}
         />
-      </Paper>
-      <Paper
-        component="form"
-        elevation={0}
-        sx={(theme) => ({
-          p: '2px 4px',
-          display: 'flex',
-          alignItems: 'center',
-          mb: 2,
-          bgcolor: alpha(theme.palette.primary.main, 0.05),
-          borderRadius: 8
-        })}
-      >
-        <IconButton sx={{ p: '10px' }} aria-label="destination">
-          <SearchIcon color="primary" />
-        </IconButton>
-        <InputBase
-          sx={{ ml: 1, flex: 1 }}
+      </div>
+      <div className="relative">
+        <Search className="absolute left-3 top-2 h-4 w-4 text-muted-foreground" />
+        <Input
+          className="pl-9 w-full"
           placeholder="Qual o Destino ?"
           value={destination}
           onChange={(e) => setDestination(e.target.value)}
         />
-      </Paper>
-    </>
-  );
+      </div>
+    </motion.div>
+  )
 }

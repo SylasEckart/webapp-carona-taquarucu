@@ -1,39 +1,38 @@
-import React from 'react';
-import { Grid, Button, Typography, Zoom } from '@mui/material';
-import { alpha } from '@mui/material/styles';
-import { AccessTime as ClockIcon, Place as PlaceIcon, DirectionsCar as CarIcon } from '@mui/icons-material';
+'use client'
+
+import { Button } from '@mui/material'
+import { motion } from 'framer-motion'
+import { Clock, MapPin, Car } from 'lucide-react'
 
 const actions = [
-  { icon: <ClockIcon />, label: 'Viagens' },
-  { icon: <PlaceIcon />, label: 'Lugares Salvos' },
-  { icon: <CarIcon />, label: 'Meus Veículos' },
-];
+  { icon: <Clock className="h-6 w-6" />, label: 'Viagens' },
+  { icon: <MapPin className="h-6 w-6" />, label: 'Lugares Salvos' },
+  { icon: <Car className="h-6 w-6" />, label: 'Editar Veículos' },
+]
 
-export function QuickActions() {
+export  function QuickActions({hasVehicle}: {hasVehicle: boolean}) {
+  console.log(hasVehicle)
+  if (!hasVehicle) {
+   actions[2] = { icon: <Car className="h-6 w-6" />, label: 'Adicionar Veículo' }
+  }
   return (
-    <Grid container spacing={2}>
+    <div className="grid grid-cols-3 gap-4">
       {actions.map((action, index) => (
-        <Grid item xs={4} key={index}>
-          <Zoom in={true} style={{ transitionDelay: `${index * 100}ms` }}>
-            <Button
-              variant="outlined"
-              fullWidth
-              sx={(theme) => ({ 
-                flexDirection: 'column', 
-                py: 2, 
-                bgcolor: 'background.paper',
-                borderRadius: 4,
-                '&:hover': {
-                  bgcolor: alpha(theme.palette.primary.main, 0.05),
-                }
-              })}
-            >
-              {React.cloneElement(action.icon, { color: "primary", sx: { fontSize: 32, mb: 1 } })}
-              <Typography variant="button" color="text.primary">{action.label}</Typography>
-            </Button>
-          </Zoom>
-        </Grid>
+        <motion.div
+          key={action.label}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: index * 0.1 }}
+        >
+          <Button
+            variant="outlined"
+            className="w-full h-full flex flex-col items-center justify-center py-4 space-y-2"
+          >
+            {action.icon}
+            <span className="text-xs">{action.label}</span>
+          </Button>
+        </motion.div>
       ))}
-    </Grid>
-  );
+    </div>
+  )
 }

@@ -22,10 +22,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
 
-  const {data, error} = await fetchUser()
-  if(error) {
-    console.log(error)
-  }
+  const {data} = await fetchUser()
+
 
   return (
     <html lang="pt-br" className={GeistSans.className} suppressHydrationWarning>
@@ -36,11 +34,7 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >      
-
-      <LayoutClient email={data?.user?.email}>
-      {children}
-      </LayoutClient>
-
+      <LayoutClient email={data?.user?.email}>{children}</LayoutClient>
       </ThemeProvider>
       </body>
     </html>

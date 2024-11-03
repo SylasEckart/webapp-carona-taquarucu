@@ -29,7 +29,10 @@ export default function Header({ toggleTheme, isDarkMode, router, }: HeaderProps
   const handleLogout = async() => {
     const {errorMessage} = await logout();
     if(errorMessage) console.error('Logout failed:', errorMessage);
-    else router.replace('/login');
+    else{
+      router.replace('/');
+      router.refresh();
+    }
   }
 
   if(!user) return null;
