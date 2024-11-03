@@ -17,7 +17,7 @@ import LocationInputs  from './LocationInputs';
 import { QuickActions } from './QuickActions';
 import RideTabs from './RideTabs';
 import { taquarucuSquarelocation } from '@/types/constants';
-import Header from '@/components/layout/Header';
+import Header from '@/components/layout/header';
 import useDarkMode from '@/hooks/useDarkMode';
 // import { LocationButton } from '@/components/button/LocationButton';
 // import useLocationActions from '@/hooks/useLocationAction';
