@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // src/components/Header.tsx
 import React, { useState } from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Avatar, Menu, MenuItem } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography,  Menu, MenuItem } from '@mui/material';
 import {  Brightness4 as Brightness4Icon, Brightness7 as Brightness7Icon } from '@mui/icons-material';
 import { logout } from '@/services/supabase/client/Auth';
+import CustomAvatar from './CustomAvatar';
+import { useLocationContext } from '@/app/context/LocationContext';
 
 interface HeaderProps {
   toggleTheme: () => void;
@@ -11,8 +13,10 @@ interface HeaderProps {
   router : any;
 }
 
-export default function Header({ toggleTheme, isDarkMode, router }: HeaderProps) {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+export default function Header({ toggleTheme, isDarkMode, router, }: HeaderProps) {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null); 
+
+  const {user} = useLocationContext()
 
   const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -25,8 +29,10 @@ export default function Header({ toggleTheme, isDarkMode, router }: HeaderProps)
   const handleLogout = async() => {
     const {errorMessage} = await logout();
     if(errorMessage) console.error('Logout failed:', errorMessage);
-    else router.refresh();
+    else router.replace('/login');
   }
+
+  if(!user) return null;
 
 
   return (
@@ -40,9 +46,8 @@ export default function Header({ toggleTheme, isDarkMode, router }: HeaderProps)
           {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>
 
-        {/* User avatar with dropdown */}
         <IconButton color="inherit" onClick={handleAvatarClick}>
-          <Avatar  />
+          <CustomAvatar stringAvatar={user.name} />
         </IconButton>
         <Menu
           anchorEl={anchorEl}

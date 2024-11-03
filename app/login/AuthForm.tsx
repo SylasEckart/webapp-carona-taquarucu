@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, TextField, Alert } from '@mui/material';
-import { LocationButton } from './LocationButton';
+import { LocationButton } from '@/components/button/LocationButton';
 import { SubmitButton } from './SubmitButton';
 import { ToggleAuthModeButton } from './ToggleAuthModeButton';
 

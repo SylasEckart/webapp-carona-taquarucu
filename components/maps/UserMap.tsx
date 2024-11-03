@@ -1,24 +1,37 @@
-import { useEffect } from "react";
-// import L from "leaflet";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect } from "react";
+import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import useMap from "@/hooks/useMap";
 import { User } from "@/types/Interfaces";
+import { iconRetinaUrl, iconUrl, shadowUrl } from "@/types/constants";
 
+
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconUrl: iconUrl, 
+  iconRetinaUrl: iconRetinaUrl,
+  shadowUrl: shadowUrl,
+});
 interface UserMapProps {
   user?: User; 
   location: [number, number];
   destinationCoords?: [number, number];
 }
 
-const UserMap: React.FC<UserMapProps> = ({ user, location, destinationCoords }) => {
+const UserMap: React.FC<UserMapProps> = React.memo(({ user, location, destinationCoords }) => {
   // Proteção para renderização do lado do servidor
   if (typeof window === 'undefined' || !user) return null;
 
-
   const { mapRef, addMarker, setView } = useMap({
     center: location,
-    zoom: 13,
+    zoom: 12,
   });
+
+  useEffect(() => {
+    addMarker(location, "Sua Localização");
+  }, [location, addMarker]);
 
   useEffect(() => {
     if(destinationCoords){
@@ -62,6 +75,6 @@ const UserMap: React.FC<UserMapProps> = ({ user, location, destinationCoords }) 
   // };
 
   return <div ref={mapRef} style={{ height: "400px", width: "100%" }} />
-};
+});
 
 export default UserMap;
