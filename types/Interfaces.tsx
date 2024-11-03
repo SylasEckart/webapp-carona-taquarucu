@@ -17,7 +17,7 @@ export interface User {
     email: string;
     phone: string;
     has_vehicle: boolean;
-    currentLocation: {
+    currentlocation: {
       type: 'Point';
       coordinates: [number, number];
     };

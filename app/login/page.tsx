@@ -11,6 +11,7 @@ import useDarkMode from '@/hooks/useDarkMode';
 import useLocationVerification from '@/hooks/useLocationAction';
 import { AuthForm } from './AuthForm';
 import { LoginMapComponent } from '@/components/maps/MapWrapper';
+import { taquarucuSquarelocation } from '@/types/constants';
 
 
 export default function LoginPage() {
@@ -37,7 +38,7 @@ export default function LoginPage() {
     }
 
     if (!locationVerified) {
-      setError('Please verify your location.');
+      setError('Por favor, verifique sua localização.');
       setLoading(false);
       return;
     }
@@ -59,8 +60,9 @@ export default function LoginPage() {
     setLoading(false);
   };
   
-  const center: [number, number] = myLocation.lat ? [myLocation.lat, myLocation.lng] : [-10.313573823214446, -48.15836083561156]; 
+  const center: [number, number] = myLocation.lat ? [myLocation.lat, myLocation.lng] : taquarucuSquarelocation; 
   const markerPosition: [number, number] | undefined = myLocation.lat ? [myLocation.lat, myLocation.lng] : undefined;
+  const zoom = myLocation.lat ? 15 : 13;
 
   return (
     <ThemeProvider theme={theme}>
@@ -107,8 +109,8 @@ export default function LoginPage() {
                 toggleLoginMode={toggleLoginMode}
               />
 
-              <Box sx={{ mt: 3, mb: 3, borderRadius: 2, overflow: 'hidden' }}>                
-                <LoginMapComponent key={myLocation.toString()} center={center} markerPosition={markerPosition} />
+              <Box  sx={{ mt: 3, mb: 3, borderRadius: 2, overflow: 'hidden' }}>                
+                <LoginMapComponent zoom={zoom} center={center} markerPosition={markerPosition} />
               </Box>
             </CardContent>
           </Card>

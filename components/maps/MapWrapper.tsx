@@ -17,9 +17,10 @@ interface UserMapProps {
 interface LoginMapProps {
   markerPosition?: [number, number];
   center: [number, number];
+  zoom: number;
 }
 
-export function UserMapComponent({ user, location }: UserMapProps) {
+export const UserMapComponent = React.memo(({ user, location }: UserMapProps) =>{
   return (
     <Paper
       elevation={0}
@@ -37,8 +38,9 @@ export function UserMapComponent({ user, location }: UserMapProps) {
       <UserMap user={user} location={location} />
     </Paper>
   );
-}
-export function LoginMapComponent({markerPosition, center }: LoginMapProps) {
+});
+
+export const LoginMapComponent = React.memo(({markerPosition, center, zoom }: LoginMapProps) => {
   return (
     <Paper
       elevation={0}
@@ -53,8 +55,8 @@ export function LoginMapComponent({markerPosition, center }: LoginMapProps) {
         position: 'relative',
       }}
     >
-      <LoginMap center={center} markerPosition={markerPosition} height="200px"
+      <LoginMap zoom={zoom} center={center} key={markerPosition?.toString()} markerPosition={markerPosition} height="200px"
           width="100%"/>
      </Paper>
   );
-}
+});

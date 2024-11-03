@@ -9,6 +9,7 @@ import {
   Fade,
   ThemeProvider,
   CssBaseline,
+  Typography,
 } from '@mui/material'
 import { useRouter } from 'next/navigation';
 import useDarkMode from '@/hooks/useDarkMode';
@@ -17,6 +18,7 @@ import { UserMapComponent } from '../../components/maps/MapWrapper';
 import { LocationInputs } from './LocationInputs';
 import { QuickActions } from './QuickActions';
 import RideTabs from './RideTabs';
+import { taquarucuSquarelocation } from '@/types/constants';
 
 export default function Dashboard() {
   const [pickup, setPickup] = useState('')
@@ -51,12 +53,15 @@ export default function Dashboard() {
         <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
           <Fade in={true} timeout={1000}>
             <Box sx={{ mb: 2 }}>
-              <UserMapComponent user={user} location={location ? [location.lat, location.lng] : [-10.313573823214446, -48.15836083561156]} />
+              <UserMapComponent user={user} location={location ? [location.lat, location.lng] : taquarucuSquarelocation} />
             </Box>
           </Fade>
 
           <Card elevation={0} sx={{ mb: 2, borderRadius: 4 }}>
             <CardContent>
+              <Typography  gutterBottom className='mb-2'>
+                Olá {user.name.split(" ")[0]}, para onde você quer ir hoje?
+              </Typography>
               <LocationInputs
                 pickup={pickup}
                 setPickup={setPickup}
