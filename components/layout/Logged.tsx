@@ -3,7 +3,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Box, CssBaseline, ThemeProvider } from '@mui/material'
-import Header from './Header'
+import Header from './header'
 import useDarkMode from '@/hooks/useDarkMode'
 import useLocationActions from '@/hooks/useLocationAction'
 import { useLocationContext } from '@/app/context/LocationContext'
@@ -11,7 +11,6 @@ import AppLoader from '../ui/AppLoader'
 import { LocationButton } from '../button/LocationButton'
 import { useRouter } from 'next/navigation'
 
-// import Header from './header'
 
 interface LoggedInLayoutProps {
   children: React.ReactNode
