@@ -39,11 +39,12 @@ export default function Header({ toggleTheme, isDarkMode, router, }: HeaderProps
   if(contextLoading) return <AppLoader message="Carregando" />
   if(!user) return null;
 
-
+  // const {isOpen,title,onClose,contentType} = modal;
   return (
     <AppBar position="sticky" color="primary" elevation={0}>
+      {/* <Modal isOpen={isOpen} onClose={onClose} title={title} content={contentType}  /> */}
       <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
+        <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
           Carona Taquaruçu
         </Typography>
 

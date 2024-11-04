@@ -2,8 +2,9 @@
 
 import { Input } from '@mui/material'
 import { motion } from 'framer-motion'
-import { Search, MapPin } from 'lucide-react'
 // import { Input } from '@/components/ui/input'
+import {  PersonPinCircleRounded as MapPin , SearchRounded as Search } from '@mui/icons-material';
+
 
 interface LocationInputsProps {
   pickup: string

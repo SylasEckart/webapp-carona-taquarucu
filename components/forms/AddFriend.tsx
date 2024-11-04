@@ -2,8 +2,8 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
-import { Search, UserPlus, Check } from 'lucide-react'
 import { Avatar, Button, Card, CardContent, CardHeader, Input } from '@mui/material'
+import { CheckRounded, PersonAddAltRounded, SearchRounded } from '@mui/icons-material'
 
 interface FriendSuggestion {
   id: string
@@ -77,7 +77,8 @@ export default function AddFriend() {
       <CardContent>
         <div className="space-y-4">
           <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            {/* <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" /> */}
+            <SearchRounded className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
               className="pl-9"
               placeholder="Search for friends..."
@@ -117,7 +118,8 @@ export default function AddFriend() {
                       exit={{ scale: 0 }}
                     >
                       <Button variant='outlined'  disabled>
-                        <Check className="h-4 w-4 text-green-500" />
+                        {/* <Check className="h-4 w-4 text-green-500" /> */}
+                        <CheckRounded className='h-4 w-4 text-green-500'/>
                       </Button>
                     </motion.div>
                   ) : (
@@ -130,7 +132,7 @@ export default function AddFriend() {
                       variant="outlined"
                         onClick={() => handleSendRequest(friend.id)}
                       >
-                        <UserPlus className="h-4 w-4" />
+                        <PersonAddAltRounded className='h-4 w-4'/>
                       </Button>
                     </motion.div>
                   )}

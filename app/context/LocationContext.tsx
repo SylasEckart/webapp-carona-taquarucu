@@ -1,16 +1,16 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction, useEffect } from 'react';
-import { User, Ride } from '@/types/Interfaces';
+import { User, Ride, ModalContentType } from '@/types/Interfaces';
 import { fetchUserData, setCurrentUserLocation } from '@/services/supabase/client/User';
 
 type LocationType = { lat: number; lng: number } | undefined;
 
 type modal = {
   isOpen: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   title: string;
-  children: ReactNode;
+  contentType?: ModalContentType;
 };
 interface LocationContextProps {
   modal: modal;
@@ -36,7 +36,7 @@ export const LocationProvider: React.FC<LocationProviderProps> = ({ children, us
   const [location, setLocation] = useState<LocationType>(undefined);
   const [ride, setRide] = useState<Ride | undefined>(undefined);
   const [user, setUser] = useState<User | undefined>(undefined);
-  const [modal,setModal] = useState<modal>({isOpen:false,onClose:()=>{},title:'',children:null});
+  const [modal,setModal] = useState<modal>({isOpen:false,onClose:()=>{},title:''});
 
   useEffect(() => {
     if (typeof window !== 'undefined' && userEmail && !user) {
