@@ -19,6 +19,7 @@ import RideTabs from './RideTabs';
 import { taquarucuSquarelocation } from '@/types/constants';
 import Header from '@/components/layout/header';
 import useDarkMode from '@/hooks/useDarkMode';
+// import { Add } from '@mui/icons-material';
 // import { LocationButton } from '@/components/button/LocationButton';
 // import useLocationActions from '@/hooks/useLocationAction';
 
@@ -32,7 +33,7 @@ export default function Dashboard() {
   ])
 
   const router = useRouter()
-  const { user, location,contextLoading, } = useLocationContext()
+  const { user, location,contextLoading } = useLocationContext()
   // const {verifyLocation,locationVerified} = useLocationActions(setLocation)
   const { theme, toggleTheme } = useDarkMode()
 

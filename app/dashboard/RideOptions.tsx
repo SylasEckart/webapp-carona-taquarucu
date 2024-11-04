@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, Button, Card, CardContent } from '@mui/material';
-import { DirectionsCar as CarIcon, AccessTime as ClockIcon, Person,  } from '@mui/icons-material';
+import { DirectionsCar as CarIcon, AccessTime as ClockIcon, Person  } from '@mui/icons-material';
 
 interface RideOption {
   id: string;

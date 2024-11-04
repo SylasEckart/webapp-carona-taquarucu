@@ -4,6 +4,12 @@ export enum HelpType {
     Money = 'money',
     Gas = 'gas'
   }
+
+export enum ModalContentType {
+    addVehicle = 'addVehicle',
+    addRide = 'addRide',
+    addFriend = 'addFriend'
+  }
   
 export enum RequestType {
     InTransit = 'in_transit',

@@ -1,21 +1,27 @@
 'use client'
 
-import React, { ReactNode } from 'react'
+import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Dialog, DialogContent, DialogTitle, IconButton } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 
 interface ModalProps {
   isOpen: boolean
-  onClose: () => void
+  onClose?: () => void
   title: string
-  children: ReactNode
+  children?: React.ReactNode
 }
 
-export default function Modal({ isOpen, onClose, title, children }: ModalProps) {
+export default function Modal({ isOpen, onClose, title,children }: ModalProps) {
+  console.log('modal',isOpen,onClose,title,children)
+
+  const [modalOpen, setModal] = useState<boolean>(isOpen)
+
+  if(!onClose) onClose = () => setModal(false)
+
   return (
     <AnimatePresence>
-      {isOpen && (
+      {isOpen && modalOpen && (
         <Dialog
           open={isOpen}
           onClose={onClose}
