@@ -1,70 +1,116 @@
 import { useState } from 'react';
 import { isLocationWithinRange } from '@/services/supabase/client/LocationService';
 
-const useLocationActions = (setLocation: (loc: { lat: number, lng: number }) => void) => {
-  const [locationVerified, setLocationVerified] = useState<boolean | undefined>(undefined);
+const useLocationActions = (
+  setLocation?: (loc: { locationName?: string; location: { lat: number; lng: number } }) => void
+) => {
+  const [locationVerified, setLocationVerified] = useState<boolean | undefined>(false);
   const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
   const [destination, setDestination] = useState<[number, number] | undefined>(undefined);
-
 
   const verifyLocation = async () => {
     setError('');
+    setLoading(true);
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
-          if (!latitude || !longitude) return setError('Não foi possivel obter a localização');
+          if (!latitude || !longitude) {
+            setError('Não foi possível obter a localização');
+            setLoading(false);
+            return;
+          }
 
           const locationObj = { lat: latitude, lng: longitude };
-          setLocation(locationObj);
+          setLocation?.({ location: locationObj });
 
-          const { data, error } = await isLocationWithinRange(latitude, longitude);
-          console.log('data',data,error)
+          try {
+            const { data, error } = await isLocationWithinRange(latitude, longitude);
+            if (error) {
+              setError('Erro ao verificar a localização');
+            } else if (!data) {
+              setError('Não está na área de cobertura');
+            } else {
+              setLocationVerified(true);
+            }
 
-          if (error) {
-            setError('Erro ao verificar a localização');
-          }
-           else {
-            if(!data) setError('Não está na area de cobertura');
-            setLocationVerified(Boolean(data));
-            
+            const locationName = await getLocationFromCoords({ lat: latitude, lng: longitude });
+            if (locationName) setLocation?.({ locationName, location: locationObj });
+          } catch (err) {
+            setError('Erro ao processar a verificação de localização, err:' + err);
+          } finally {
+            setLoading(false);
           }
         },
-        () => setError('Por Favor habilite o serviço de geolocalização')
+        () => {
+          setError('Por favor, habilite o serviço de geolocalização');
+          setLoading(false);
+        }
       );
     } else {
       setError('Geolocalização não suportada');
+      setLoading(false);
     }
   };
 
-
   interface SearchLocationParams {
     destination: string;
-    addMarker: (coords: [number, number], label: string) => void;
-    setView: (coords: [number, number], zoom: number) => void;
   }
 
-  const searchLocation = async ({ destination}: SearchLocationParams): Promise<void> => {
+  const searchLocation = async ({ destination }: SearchLocationParams): Promise<void> => {
     if (!destination) return;
-
+    setLoading(true);
     try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(destination)}&format=json`);
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(destination)}&format=json`
+      );
       const data = await response.json();
 
       if (data.length > 0) {
         const { lat, lon } = data[0];
         const coords: [number, number] = [parseFloat(lat), parseFloat(lon)];
         setDestination(coords);
-        
       } else {
-        setError("Endereço não encontrado!");
+        setError('Endereço não encontrado!');
       }
     } catch (error) {
-      console.error("Erro ao buscar o endereço:", error);
+      setError('Erro ao buscar o endereço!');
+      console.error('Erro ao buscar o endereço:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  return { locationVerified, verifyLocation, error,searchLocation, destination, setDestination };
+  const getLocationFromCoords = async ({ lat, lng }: { lat: number; lng: number }): Promise<string | undefined> => {
+    if (!lat || !lng) return;
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`,
+      );
+      const data = await response.json();
+
+      if (data && data.display_name) {
+        return data.display_name;
+      } else {
+        setError('Endereço não encontrado!');
+      }
+    } catch (error) {
+      setError('Erro ao buscar o endereço!');
+      console.error('Erro ao buscar o endereço:', error);
+    }
+  };
+
+  return {
+    locationVerified,
+    verifyLocation,
+    error,
+    loading,
+    searchLocation,
+    destination,
+    setDestination,
+    getLocationFromCoords,
+  };
 };
 
 export default useLocationActions;
