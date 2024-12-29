@@ -4,7 +4,10 @@ import React, { createContext, useContext, useState, ReactNode, Dispatch, SetSta
 import { User, Ride, ModalContentType } from '@/types/Interfaces';
 import { fetchUserData, setCurrentUserLocation } from '@/services/supabase/client/User';
 
-type LocationType = { lat: number; lng: number } | undefined;
+type LocationType ={
+  locationName?: string | null;
+  location:{ lat: number; lng: number }
+} | undefined;
 
 type modal = {
   isOpen: boolean;
@@ -38,6 +41,7 @@ export const LocationProvider: React.FC<LocationProviderProps> = ({ children, us
   const [user, setUser] = useState<User | undefined>(undefined);
   const [modal,setModal] = useState<modal>({isOpen:false,onClose:()=>{},title:''});
 
+
   useEffect(() => {
     if (typeof window !== 'undefined' && userEmail && !user) {
       const fetchData = async () => {
@@ -51,6 +55,7 @@ export const LocationProvider: React.FC<LocationProviderProps> = ({ children, us
             throw new Error('User not found');
           }
           console.log('data', data,location);
+          if(location?.location) setCurrentUserLocation(userEmail,location.location);
           setUser(data);
         } catch (error) {
           console.error('Fetch user data failed:', error);
@@ -65,11 +70,6 @@ export const LocationProvider: React.FC<LocationProviderProps> = ({ children, us
     }
   }, [userEmail, user]);
 
-  useEffect(() => {
-    if (location && user) {
-      setCurrentUserLocation(user.email, location);
-    }
-  }, [location]);
 
   return (
     <LocationContext.Provider value={{ contextLoading: loading, location, setLocation, user, setUser, ride, setRide,modal,setModal }}>

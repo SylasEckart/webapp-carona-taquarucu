@@ -7,11 +7,17 @@ import {  PersonPinCircleRounded as MapPin , SearchRounded as Search } from '@mu
 
 
 interface LocationInputsProps {
-  pickup: string
-  setPickup: (value: string) => void
+
+  pickup: { lat: number; lng: number } | undefined
+
+  setPickup: (value: { lat: number; lng: number } | undefined) => void
+
   destination: string
+
   setDestination: (value: string) => void
+
 }
+
 
 export default function LocationInputs({
   pickup,
@@ -32,7 +38,7 @@ export default function LocationInputs({
           className="pl-9 w-full"
           placeholder="Lugar de Partida"
           value={pickup}
-          onChange={(e) => setPickup(e.target.value)}
+          onChange={() => setPickup({ lat: 0, lng: 0 })}
         />
       </div>
       <div className="relative">
