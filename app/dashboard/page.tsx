@@ -1,6 +1,6 @@
 "use client"
 
-import React, {  useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { useLocationContext } from '../context/LocationContext';
 import {
   Box,
@@ -32,14 +32,7 @@ export default function Dashboard() {
 
   // Use the custom hook
   const {
-    isModalOpen,
-    selectedRide,
-    openModal,
-    closeModal,
-    confirmRide,
-    isLoading,
-    error
-  } = useRideModal(async (ride) => {
+    openModal  } = useRideModal(async (ride) => {
     console.log('Ride confirmed:', ride);
   });
 

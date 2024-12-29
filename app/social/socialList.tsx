@@ -6,13 +6,10 @@ import {
   ListItem, 
   ListItemAvatar, 
   ListItemText, 
-  ListItemSecondaryAction,
   Avatar,
   Button,
   Typography,
-  Paper,
-  Box
-} from '@mui/material'
+  Paper} from '@mui/material'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove'
 

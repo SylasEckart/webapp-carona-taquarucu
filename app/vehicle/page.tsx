@@ -6,9 +6,7 @@ import {
   Box,
   Card,
   CardContent,
-  CssBaseline,
   Fade,
-  ThemeProvider,
   Typography,
   TextField,
   Button,
@@ -16,15 +14,13 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  SelectChangeEvent,
 } from '@mui/material'
 import { useRouter } from 'next/navigation'
-import Header from '@/components/layout/header'
-import useDarkMode from '@/hooks/useDarkMode'
 
 export default function AddVehiclePage() {
   const { user } = useLocationContext()
   const router = useRouter()
-  const { theme, toggleTheme } = useDarkMode()
 
   const [vehicleData, setVehicleData] = useState({
     make: '',
@@ -39,8 +35,8 @@ export default function AddVehiclePage() {
 
   const firstName = user.name.split(" ")[0]
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>) => {
-    const { name, value } = e.target
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }> | SelectChangeEvent<string>) => {
+    const { name, value } = e.target as HTMLInputElement | { name?: string; value: unknown }
     setVehicleData(prev => ({ ...prev, [name as string]: value }))
   }
 

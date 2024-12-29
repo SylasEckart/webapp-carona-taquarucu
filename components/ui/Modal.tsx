@@ -6,12 +6,11 @@ import {
   Button,
   Avatar,
   Divider,
-  IconButton,
   useTheme,
   CircularProgress,
   Alert,
 } from '@mui/material';
-import { Close as CloseIcon, Star, AccessTime, Person } from '@mui/icons-material';
+import { Star, AccessTime, Person } from '@mui/icons-material';
 import { RideDetails } from '@/hooks/useRideModal';
 import AddFriend from '../forms/AddFriend';
 

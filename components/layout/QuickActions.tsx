@@ -5,10 +5,10 @@ import { motion } from 'framer-motion'
 import { DirectionsCar as CarIcon,  WhereToVote as MapPin, People as PeopleIcon, AddLocationAlt as LocationPlusIcon } from '@mui/icons-material';
 
 import { useState } from 'react';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 
-
-export function QuickActions({pathname, router}: {pathname: string, router: any}) {
+export function QuickActions({pathname, router}: {pathname: string, router: AppRouterInstance}) {
 
   const [pathnameState, setPathname] = useState(pathname);
 

@@ -18,13 +18,14 @@ import AppLoader from '@/components/ui/AppLoader';
 
 export default function LoginPage() {
   const router = useRouter();
-  const { setLocation,location:myLocation,contextLoading} = useLocationContext();
+  const { setLocation,location,contextLoading} = useLocationContext();
+  const myLocation = location?.location;
 
   // if(!contextLoading && !myLocation) return null;
 
   const { theme, toggleTheme } = useDarkMode();
   const { isLogin, formData, error, handleInputChange, validateFields, toggleLoginMode, setError,setMessage,message } = useAuthForm({ isLogin: true });
-  const { locationVerified, verifyLocation} = useLocationVerification(setLocation);
+  const { locationVerified, verifyLocation } = useLocationVerification(setLocation);
 
   const [loading, setLoading] = React.useState(false);
 
