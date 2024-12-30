@@ -4,10 +4,9 @@ import React, { useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography,  Menu, MenuItem } from '@mui/material';
 import {  Brightness4 as Brightness4Icon, Brightness7 as Brightness7Icon } from '@mui/icons-material';
 import CustomAvatar from './CustomAvatar';
-import { useLocationContext } from '@/app/context/LocationContext';
-
 import { logout } from '@/services/supabase/client/Auth';
 import AppLoader from '../ui/AppLoader';
+import { useUserContext } from '@/app/context/UserContext';
 
 
 interface HeaderProps {
@@ -19,7 +18,7 @@ interface HeaderProps {
 export default function Header({ toggleTheme, isDarkMode, router, }: HeaderProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null); 
 
-  const {user,contextLoading} = useLocationContext()
+  const { user, isLoading} = useUserContext();
 
   const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -36,7 +35,7 @@ export default function Header({ toggleTheme, isDarkMode, router, }: HeaderProps
       router.refresh();
     }
   }
-  if(contextLoading) return <AppLoader message="Carregando" />
+  if(isLoading) return <AppLoader message="Carregando" />
   if(!user) return null;
 
   // const {isOpen,title,onClose,contentType} = modal;

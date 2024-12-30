@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useState } from 'react'
-import { useLocationContext } from '../context/LocationContext'
 import {
   Box,
   Card,
@@ -17,10 +16,11 @@ import {
   SelectChangeEvent,
 } from '@mui/material'
 import { useRouter } from 'next/navigation'
+import { useUserContext } from '../context/UserContext'
 
 export default function AddVehiclePage() {
-  const { user } = useLocationContext()
   const router = useRouter()
+  const {user} = useUserContext();
 
   const [vehicleData, setVehicleData] = useState({
     make: '',

@@ -18,7 +18,7 @@ interface RideTabsProps {
 }
 
 export default function RideTabs({ options, onSelectRide }: RideTabsProps) {
-  const [tabValue, setTabValue] = useState(0)
+  const [tabValue, setTabValue] = useState<number>(0)
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue)
@@ -38,12 +38,48 @@ export default function RideTabs({ options, onSelectRide }: RideTabsProps) {
           },
         }}
       >
-        <Tab label="Escolher Corrida" />
         <Tab label="Criar Corrida" />
+        <Tab label="Escolher Corrida" />
       </Tabs>
 
+
+        
       <AnimatePresence mode="wait">
+        
+        {
+          tabValue === 3 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Box sx={{ mt: 1, textAlign: 'center', p: 1, border: '1px solid', borderColor: 'primary.main', borderRadius: 2 }}>
+          <Typography variant="caption" color="primary.main">
+            Escolha uma opção acima
+          </Typography>
+              </Box>
+            </motion.div>
+          )
+        }
         {tabValue === 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Box sx={{ mt: 2 }}>
+              <Typography sx={{ mb: 2 }} variant="subtitle1" color="text.secondary">
+                Criar Corrida e permitir que amigos embarquem
+              </Typography>
+              <Button variant="outlined" fullWidth size="large" sx={{ borderRadius: 8 }}>
+                Agendar Viagem
+              </Button>
+            </Box>
+          </motion.div>
+        )}
+        {
+        tabValue === 1 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -83,23 +119,7 @@ export default function RideTabs({ options, onSelectRide }: RideTabsProps) {
           </motion.div>
         )}
 
-        {tabValue === 1 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <Box sx={{ mt: 2 }}>
-              <Typography sx={{ mb: 2 }} variant="subtitle1" color="text.secondary">
-                Criar Corrida e permitir que amigos embarquem
-              </Typography>
-              <Button variant="outlined" fullWidth size="large" sx={{ borderRadius: 8 }}>
-                Agendar Viagem
-              </Button>
-            </Box>
-          </motion.div>
-        )}
+        
       </AnimatePresence>
     </Box>
   )

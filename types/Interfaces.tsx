@@ -27,6 +27,7 @@ export interface User {
       type: 'Point';
       coordinates: [number, number];
     };
+    friendships: string[] // friendship_id: string;
   }
   
   // Vehicle Interface
@@ -100,8 +101,7 @@ export interface Request {
   // Friendship Interface
 export interface Friendship {
     friendship_id: string;
-    user_id_1: string;
-    user_id_2: string;
+    users: [string, string];
     status: string;
     created_at: string; // ISO string format for datetime
     confirmed_at: string | null; // ISO string format for datetime
