@@ -20,7 +20,7 @@ interface User {
   isFriend: boolean
 }
 
-const initialUsers: User[] = [
+const fallbackUsers: User[] = [
     { id: '1', name: 'Alice Johnson', username: '@alice', isFriend: false },
     { id: '2', name: 'Bob Smith', username: '@bob', isFriend: true },
     { id: '3', name: 'Charlie Brown', username: '@charlie', isFriend: false },
@@ -43,8 +43,8 @@ const initialUsers: User[] = [
     { id: '20', name: 'Tony Stark', username: '@tony', isFriend: true },
 ]
 
-export function SocialFriendsList() {
-  const [users, setUsers] = useState<User[]>(initialUsers)
+export function SocialFriendsList({ initialUsers }: { initialUsers?: User[] }) {
+  const [users, setUsers] = useState<User[]>(initialUsers || fallbackUsers)
 
   const toggleFriendship = (id: string) => {
     setUsers(users.map(user => 
