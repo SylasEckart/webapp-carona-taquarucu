@@ -14,8 +14,22 @@ export const fetchUserData = async (email:string) => {
     return {data, error};
 }
 
+export const getAllUsers = async () => {
+    
+    const { data, error } = await supabaseClient
+                                .from('users')
+                                .select('name,friendships,user_id')
+    
+    console.log('getAllUsers',error,data)
+
+    return {data, error};
+}
+
+
+
 export const setCurrentUserLocation = async (email:string, location: {lat:number,lng:number}) => {
     console.log('location',location)
+
     const {data, error } = await supabaseClient
                                 .from('users')
                                 .update({

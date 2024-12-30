@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
+import { useTheme } from '@mui/material/styles'
 import { 
   List, 
   ListItem, 
@@ -8,70 +9,95 @@ import {
   ListItemText, 
   Avatar,
   Button,
-  Typography,
-  Paper} from '@mui/material'
+  Paper,
+  InputAdornment,
+  TextField
+} from '@mui/material'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove'
+import SearchIcon from '@mui/icons-material/Search'
+import { ListUsers } from '../context/AppContext'
 
-interface User {
-  id: string
-  name: string
-  username: string
-  isFriend: boolean
-}
-
-const fallbackUsers: User[] = [
-    { id: '1', name: 'Alice Johnson', username: '@alice', isFriend: false },
-    { id: '2', name: 'Bob Smith', username: '@bob', isFriend: true },
-    { id: '3', name: 'Charlie Brown', username: '@charlie', isFriend: false },
-    { id: '4', name: 'Diana Prince', username: '@diana', isFriend: true },
-    { id: '5', name: 'Ethan Hunt', username: '@ethan', isFriend: false },
-    { id: '6', name: 'Fiona Gallagher', username: '@fiona', isFriend: true },
-    { id: '7', name: 'George Martin', username: '@george', isFriend: false },
-    { id: '8', name: 'Hannah Baker', username: '@hannah', isFriend: true },
-    { id: '9', name: 'Ian Somerhalder', username: '@ian', isFriend: false },
-    { id: '10', name: 'Jack Sparrow', username: '@jack', isFriend: true },
-    { id: '11', name: 'Karen Page', username: '@karen', isFriend: false },
-    { id: '12', name: 'Liam Neeson', username: '@liam', isFriend: true },
-    { id: '13', name: 'Mia Wallace', username: '@mia', isFriend: false },
-    { id: '14', name: 'Noah Centineo', username: '@noah', isFriend: true },
-    { id: '15', name: 'Olivia Wilde', username: '@olivia', isFriend: false },
-    { id: '16', name: 'Paul Rudd', username: '@paul', isFriend: true },
-    { id: '17', name: 'Quentin Tarantino', username: '@quentin', isFriend: false },
-    { id: '18', name: 'Rachel Green', username: '@rachel', isFriend: true },
-    { id: '19', name: 'Steve Rogers', username: '@steve', isFriend: false },
-    { id: '20', name: 'Tony Stark', username: '@tony', isFriend: true },
-]
-
-export function SocialFriendsList({ initialUsers }: { initialUsers?: User[] }) {
-  const [users, setUsers] = useState<User[]>(initialUsers || fallbackUsers)
+export function SocialFriendsList({ initialUsers = [] }: { initialUsers?: ListUsers[] }) {
+  const [users, setUsers] = useState<ListUsers[]>(initialUsers)
+  const [searchTerm, setSearchTerm] = useState('')
+  const theme = useTheme()
 
   const toggleFriendship = (id: string) => {
     setUsers(users.map(user => 
-      user.id === id ? { ...user, isFriend: !user.isFriend } : user
+      user.user_id === id ? { ...user, isFriend: !user.isFriend } : user
     ))
   }
 
+  const filteredUsers = useMemo(() => {
+    return users.filter(user => 
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) 
+      // user.username.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  }, [users, searchTerm])
+
   return (
-    <Paper elevation={0} sx={{ mx: 'auto'}}>
-        <Typography variant="h6" sx={{ px: 2 }}>Amigos</Typography>
-      <List sx={{ width: '100%', overflow:'scroll', height:'60vh', bgcolor: 'background.paper' }}>
-        {users.map((user) => (
-          <ListItem key={user.id} alignItems="flex-start">
+    <Paper 
+      elevation={0} 
+      sx={{ 
+        maxWidth: '100%', 
+        mx: 'auto', 
+        bgcolor: theme.palette.background.paper,
+        borderRadius: 2,
+        overflow: 'hidden',
+        height: '60%'
+      }}
+    >
+      <TextField
+        fullWidth
+        variant="outlined"
+        placeholder="Buscar amigos..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        sx={{ p: '13px' }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+        }}
+      />
+      <List sx={{ width: '100%', maxHeight: '60vh', overflow: 'auto' }}>
+        {filteredUsers.map((user) => (
+          <ListItem
+            key={user.user_id}
+            alignItems="flex-start"
+          >
             <ListItemAvatar>
-              <Avatar alt={user.name} src={`https://api.dicebear.com/6.x/initials/svg?seed=${user.name}`} />
+              <Avatar 
+                alt={user.name} 
+                src={`https://api.dicebear.com/6.x/initials/svg?seed=${user.name}`}
+                sx={{ width: 50, height: 50 }}
+              />
             </ListItemAvatar>
             <ListItemText
               primary={user.name}
-              secondary={user.username}
+              // secondary={`@${user.username}`}
+              sx={{ my: 'auto' }}
             />
-              <Button
-                variant="outlined"
-                color={user.isFriend ? "secondary" : "primary"}
-                startIcon={user.isFriend ? <PersonRemoveIcon /> : <PersonAddIcon />}
-                onClick={() => toggleFriendship(user.id)}
-              >
-              </Button>
+            <Button
+              variant="outlined"
+              color={user.isFriend ? "secondary" : "primary"}
+              startIcon={user.isFriend ? <PersonRemoveIcon /> : <PersonAddIcon />}
+              onClick={() => toggleFriendship(user.user_id)}
+              sx={{ 
+                minWidth: 40, 
+                width: 40, 
+                height: 40, 
+                borderRadius: '50%', 
+                p: 0,
+                '& .MuiButton-startIcon': {
+                  margin: 0
+                }
+              }}
+            >
+            </Button>
           </ListItem>
         ))}
       </List>
