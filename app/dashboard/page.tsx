@@ -2,6 +2,7 @@
 
 import React, {  useState } from 'react'
 import { useLocationContext } from '../context/LocationContext';
+import { useUserContext } from '../context/UserContext';
 import {
   Box,
   Card,
@@ -20,7 +21,8 @@ import { useRideModal } from '@/hooks/useRideModal';
 // import useLocationActions from '@/hooks/useLocationAction';
 
 export default function Dashboard() {
-  const { user, location: locationObj } = useLocationContext();
+  const { location: locationObj } = useLocationContext();
+  const {user} = useUserContext();
   const location = locationObj?.location;
   const [pickup, setPickup] = useState(location);
   const [destination, setDestination] = useState('');

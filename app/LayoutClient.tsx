@@ -9,6 +9,10 @@ import Header from "@/components/layout/header"
 import { useRouter } from "next/navigation"
 import ModalDefault from "@/components/ui/Modal"
 import { QuickActions } from "@/components/layout/QuickActions"
+import InstallPWA from "@/components/pwa/InstallPWA"
+import { ModalProvider } from "./context/ModalContext"
+import { AppProvider } from "./context/AppContext"
+import { UserProvider } from "./context/UserContext"
 
 
 interface LayoutClientProps {
@@ -26,10 +30,18 @@ export default function LayoutClient({ children, email }: LayoutClientProps) {
   console.log('pathname', pathname);
 
   return (
-    <LocationProvider userEmail={email || undefined}>
+
+    <LocationProvider>
+      <InstallPWA/>
       <AnimatePresence>
       <ThemeProvider theme={theme}>
+      <AppProvider>
+      <UserProvider userEmail={email}>
+
       <CssBaseline />
+      <ModalProvider>         
+
+
       <motion.main
           style={{
             backgroundColor: theme.palette.background.default,
@@ -47,7 +59,6 @@ export default function LayoutClient({ children, email }: LayoutClientProps) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
         >
-          
       <Box sx={{ flexGrow: 1, overflow: 'auto', width: '100%' }}>
           {email && <Header toggleTheme={toggleTheme} isDarkMode={theme.palette.mode === 'dark'} router={router} />}
 
@@ -66,9 +77,12 @@ export default function LayoutClient({ children, email }: LayoutClientProps) {
           
 
           </Box>
-        </motion.main>
-      </ThemeProvider>
 
+        </motion.main>
+      </ModalProvider>
+      </UserProvider>
+      </AppProvider>
+      </ThemeProvider>
       </AnimatePresence>
     </LocationProvider>
   )

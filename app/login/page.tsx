@@ -4,7 +4,6 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { ThemeProvider, CssBaseline, Container, Box, Card, CardContent, Typography, IconButton } from '@mui/material';
 import { Brightness4 as Brightness4Icon, Brightness7 as Brightness7Icon } from '@mui/icons-material';
-import { login, signUp } from '@/services/supabase/client/Auth';
 import { useLocationContext } from '../context/LocationContext';
 import useAuthForm from '@/hooks/useAuthForm';
 import useDarkMode from '@/hooks/useDarkMode';
@@ -13,12 +12,12 @@ import { AuthForm } from './AuthForm';
 import {motion} from 'framer-motion';
 import { LoginMapComponent } from '@/components/maps/MapWrapper';
 import { taquarucuSquarelocation } from '@/types/constants';
-import AppLoader from '@/components/ui/AppLoader';
+import { login, signUp } from '@/services/supabase/client/Auth';
 
 
 export default function LoginPage() {
   const router = useRouter();
-  const { setLocation,location,contextLoading} = useLocationContext();
+  const { setLocation,location} = useLocationContext();
   const myLocation = location?.location;
 
   // if(!contextLoading && !myLocation) return null;
@@ -63,8 +62,6 @@ export default function LoginPage() {
 
     setLoading(false);
   };
-
-  if(contextLoading) return <AppLoader message='Carregando' />;
   
   const center: [number, number] = myLocation?.lat ? [myLocation?.lat, myLocation?.lng] : taquarucuSquarelocation; 
   const markerPosition: [number, number] | undefined = myLocation?.lat ? [myLocation?.lat, myLocation?.lng] : undefined;
