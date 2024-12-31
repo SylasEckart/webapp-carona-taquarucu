@@ -18,6 +18,7 @@ export enum RequestType {
   
   // User Interface
 export interface User {
+    isFriend?: boolean;
     user_id: string;
     name: string;
     email: string;
