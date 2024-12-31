@@ -40,8 +40,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     
         const fetchData = async () => {
           try {
-            const {data} = await getAllUsers()
-            if (isMounted) setListUsers(data || [] as ListUsers[]); 
+            const { data } = await getAllUsers();
+            if (isMounted) setListUsers(data ?? []);
           } catch (error) {
             console.error('Fetch user data failed:', error);
           } finally {

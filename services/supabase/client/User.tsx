@@ -2,7 +2,6 @@
 // import { errorHandler } from "@/lib/helpers";v
 import { supabaseClient } from "@/utils/supabase/client";
 import { User } from "@/types/Interfaces";
-import { ListUsers } from "@/app/context/AppContext";
 
 export const fetchUserData = async (email:string) => {
 
@@ -22,11 +21,7 @@ export const getAllUsers = async () => {
                                 .select('*')
 
     if(error) throw error;
-    const addData = data.map((user:ListUsers) => {
-        user.isFriend = false;
-        return user;
-    })
-    return {data:addData};
+    return {data};
 }
 
 
