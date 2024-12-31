@@ -31,7 +31,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [isOnline, setIsOnline] = useState<boolean>(true);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [pwaStatus, setPwaStatus] = useState<'installed' | 'not-installed' | 'installing'>('not-installed');
-  const [listUsers,setListUsers] = useState<ListUsers[]>([]);
+  const [listUsers,setListUsers] = useState<ListUsers[]>([] as ListUsers[]);
   const [isLoading, setLoading] = useState<boolean>(true);
 
  useEffect(() => {
@@ -40,7 +40,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         const fetchData = async () => {
           try {
             const {data} = await getAllUsers()
-            if (isMounted) setListUsers(data || [])
+            if (isMounted) setListUsers(data || [] as ListUsers[]); 
           } catch (error) {
             console.error('Fetch user data failed:', error);
           } finally {
