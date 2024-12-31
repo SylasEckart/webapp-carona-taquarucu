@@ -19,10 +19,8 @@ export const getAllUsers = async () => {
     const { data, error } = await supabaseClient
                                 .from('users')
                                 .select('name,friendships,user_id')
-    
-    console.log('getAllUsers',error,data)
-
-    return {data, error};
+    if(error) throw error;
+    return {data};
 }
 
 
