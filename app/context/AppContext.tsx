@@ -25,10 +25,11 @@ interface AppContextProps {
 const AppContext = createContext<AppContextProps | undefined>(undefined);
 
 interface AppProviderProps {
+  userEmail?: string;
   children: ReactNode;
 }
 
-export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
+export const AppProvider: React.FC<AppProviderProps> = ({ children,userEmail }) => {
   const [isOnline, setIsOnline] = useState<boolean>(true);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [pwaStatus, setPwaStatus] = useState<'installed' | 'not-installed' | 'installing'>('not-installed');
@@ -40,7 +41,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     
         const fetchData = async () => {
           try {
-            const { data } = await getAllUsers();
+            const { data } = await getAllUsers(userEmail);
             if (isMounted) setListUsers(data);
           } catch (error) {
             console.error('Fetch user data failed:', error);

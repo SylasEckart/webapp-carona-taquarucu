@@ -35,7 +35,7 @@ export default function LayoutClient({ children, email }: LayoutClientProps) {
       <InstallPWA/>
       <AnimatePresence>
       <ThemeProvider theme={theme}>
-      <AppProvider>
+      <AppProvider userEmail={email}>
       <UserProvider userEmail={email}>
 
       <CssBaseline />

@@ -14,14 +14,16 @@ export const fetchUserData = async (email:string) => {
     return {data, error};
 }
 
-export const getAllUsers = async () => {
+export const getAllUsers = async (userEmail?: string) => {
     
     const { data, error } = await supabaseClient
                                 .from('users')
                                 .select('*')
+    
 
     if(error) throw error;
-    return {data};
+    const filteredData = data.filter((user: User) => user.email !== userEmail);
+    return {data:filteredData};
 }
 
 
