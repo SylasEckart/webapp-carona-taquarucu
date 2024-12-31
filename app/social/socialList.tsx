@@ -31,7 +31,7 @@ export function SocialFriendsList({ initialUsers = [] }: { initialUsers?: ListUs
 
   const filteredUsers = useMemo(() => {
     return users.filter(user => 
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) 
+      user?.name?.toLowerCase().includes(searchTerm.toLowerCase()) 
       // user.username.toLowerCase().includes(searchTerm.toLowerCase())
     )
   }, [users, searchTerm])
@@ -85,7 +85,7 @@ export function SocialFriendsList({ initialUsers = [] }: { initialUsers?: ListUs
               variant="outlined"
               color={user.isFriend ? "secondary" : "primary"}
               startIcon={user.isFriend ? <PersonRemoveIcon /> : <PersonAddIcon />}
-              onClick={() => toggleFriendship(user.user_id)}
+              onClick={() => toggleFriendship(user?.user_id || '')}
               sx={{ 
                 minWidth: 40, 
                 width: 40, 

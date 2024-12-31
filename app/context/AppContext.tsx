@@ -5,9 +5,9 @@ import React, { createContext, useContext, useState, ReactNode, Dispatch, SetSta
 
 
 export type ListUsers = {
-  name: string;
-  friendships: string[];
-  user_id: string;
+  name?: string;
+  friendships?: string[];
+  user_id?: string;
   isFriend?: boolean;
 }
 interface AppContextProps {
