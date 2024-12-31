@@ -19,7 +19,8 @@ export const getAllUsers = async () => {
     
     const { data, error } = await supabaseClient
                                 .from('users')
-                                .select('name,friendships,user_id')
+                                .select('*')
+
     if(error) throw error;
     const addData = data.map((user:ListUsers) => {
         user.isFriend = false;
