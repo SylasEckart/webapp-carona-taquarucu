@@ -1,44 +1,46 @@
 {
-    "name": "Carona Taquarucu",
-    "short_name": "Carona",
-    "description": "Um app de carona para Taquarucu.",
-    "icons": [
-      {
-        "src": "/icons/icon-192x192.png",
-        "sizes": "192x192",
-        "type": "image/png"
-      },
-      {
-        "src": "/icons/icon-512x512.png", 
-        "sizes": "512x512",
-        "type": "image/png"
-      }
-    ],
-    "start_url": "/",
-    "background_color": "#ffffff",
-    "display": "standalone",
-    "scope": "/",
-    "theme_color": "#000000",
-    "orientation": "portrait-primary",
-    "prefer_related_applications": false,
-    "categories": ["travel", "transportation"],
-    "shortcuts": [
-      {
-        "name": "Oferecer Carona",
-        "url": "/oferecer",
-        "icons": [
-          {
-            "src": "/icons/offer-ride-96x96.png",
-            "sizes": "96x96"
-          }
-        ]
-      }
-    ],
-    "screenshots": [
-      {
-        "src": "/screenshots/home.png",
-        "sizes": "1280x720",
-        "type": "image/png"
-      }
-    ]
+  "name": "Carona Taquarucu",
+  "short_name": "Carona",
+  "lang": "pt-BR",
+  "description": "Um app de carona para Taquarucu.",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512x512.png", 
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false,
+  "categories": ["travel", "transportation"],
+  "shortcuts": [
+    {
+      "name": "Oferecer Carona",
+      "url": "/oferecer",
+      "icons": [
+        {
+          "src": "/icons/offer-ride-96x96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/home.png",
+      "sizes": "1280x720",
+      "type": "image/png"
+    }
+  ]
 }

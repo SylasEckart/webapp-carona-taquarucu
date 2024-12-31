@@ -62,8 +62,8 @@ export default function Dashboard() {
           </Box>
         </Fade>
 
-        <Card elevation={0} sx={{ mb: 2, borderRadius: 4 }}>
-          <CardContent>
+        <Card elevation={0} sx={{ mb: 2, borderRadius: 4}}>
+          <CardContent className='!pb-0' >
             <Typography gutterBottom className='mb-2'>
               Olá {firstName}, para onde você quer ir hoje?
             </Typography>

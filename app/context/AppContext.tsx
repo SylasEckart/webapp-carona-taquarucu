@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { getAllUsers } from '@/services/supabase/client/User';
@@ -6,7 +7,7 @@ import React, { createContext, useContext, useState, ReactNode, Dispatch, SetSta
 
 export type ListUsers = {
   name: string;
-  friendships: string[];
+  friendships: any[];
   user_id: string;
   isFriend?: boolean;
 }
@@ -17,7 +18,7 @@ interface AppContextProps {
   setTheme: Dispatch<SetStateAction<'light' | 'dark'>>;
   pwaStatus: 'installed' | 'not-installed' | 'installing';
   setPwaStatus: Dispatch<SetStateAction<'installed' | 'not-installed' | 'installing'>>;
-  listUsers: ListUsers[];
+  listUsers: any[];
   isLoading: boolean;
 }
 
@@ -31,7 +32,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [isOnline, setIsOnline] = useState<boolean>(true);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [pwaStatus, setPwaStatus] = useState<'installed' | 'not-installed' | 'installing'>('not-installed');
-  const [listUsers,setListUsers] = useState<ListUsers[]>([]);
+  const [listUsers,setListUsers] = useState<any[]>([]);
   const [isLoading, setLoading] = useState<boolean>(true);
 
  useEffect(() => {
@@ -39,8 +40,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     
         const fetchData = async () => {
           try {
-            const {data} = await getAllUsers()
-            if (isMounted) setListUsers(data || [])
+            const { data } = await getAllUsers();
+            if (isMounted) setListUsers(data);
           } catch (error) {
             console.error('Fetch user data failed:', error);
           } finally {
