@@ -2,7 +2,7 @@
 
 import React, { useMemo } from 'react';
 import { Box, Card, Fade } from '@mui/material';
-import { SocialFriendsList } from './SocialList';
+import { SocialFriendsList } from './socialList';
 import { useAppContext } from '../context/AppContext';
 import { useUserContext } from '../context/UserContext';
 import { useFriendshipContext } from '../context/FriendshipContext';
