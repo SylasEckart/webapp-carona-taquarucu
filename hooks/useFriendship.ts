@@ -17,7 +17,7 @@ export const useFriendship = (userId: string, dispatch: React.Dispatch<Friendshi
           dispatch({ type: "FETCH_ERROR", payload: errorMessage });
           return;
         }
-        dispatch({ type: "FETCH_SUCCESS", payload: data || []  as Friendship[] });
+        dispatch({ type: "FETCH_SUCCESS", payload: data as Friendship[] || []  as Friendship[] });
       } catch (error) {
         console.log("Failed to fetch friendships", error);
         dispatch({ type: "FETCH_ERROR", payload: "Failed to fetch friendships." });

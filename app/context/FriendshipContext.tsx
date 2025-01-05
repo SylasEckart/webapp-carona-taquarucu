@@ -1,14 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { createContext, useReducer, useContext, useMemo, ReactNode } from "react";
 import { Friendship } from "@/types/Interfaces";
-import { friendshipReducer,initialFriendshipState } from "../reducers/friendshipReducer";
+import { FriendshipAction, friendshipReducer,initialFriendshipState } from "../reducers/friendshipReducer";
 import { useFriendship } from "@/hooks/useFriendship";
 
 interface FriendshipContextProps {
   friendships: Friendship[];
   isLoading: boolean;
   error: string | null;
-  dispatch: React.Dispatch<any>;
+  dispatch: React.Dispatch<FriendshipAction>;
 }
 
 const FriendshipContext = createContext<FriendshipContextProps | undefined>(undefined);
