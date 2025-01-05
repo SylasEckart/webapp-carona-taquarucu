@@ -26,7 +26,7 @@ export default function SocialPage() {
       );
 
       if (!friendship) {
-        return { ...user, isFriend: false, isPending: false, friendshipId: null };
+        return { ...user, isFriend: false, isPending: false, friendshipId: undefined };
       }
 
       const isPending = friendship.status === "pendente";

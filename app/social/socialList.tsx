@@ -57,7 +57,7 @@ const UserListItem = ({ user, onFriendshipToggle }: {
           user.isFriend ? onFriendshipToggle(user?.friendshipId || "","Delete") : 
           user.isPending && !user.isSender ? ()=> {} :
           user.isPending ? onFriendshipToggle(user?.friendshipId || "","Confirm") : 
-          onFriendshipToggle(user.user_id) 
+          onFriendshipToggle(user.user_id || "") 
         }
       sx={{
         minWidth: 40,

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from "react";
 import { supabaseClient } from "@/utils/supabase/client";
 import { searchFriendships } from "@/services/supabase/client/Friendship";
@@ -7,7 +6,7 @@ import { Friendship } from "@/types/Interfaces";
 
 export const useFriendship = (userId: string, dispatch: React.Dispatch<FriendshipAction>) => {
   useEffect(() => {
-    let subscription: any;
+    let subscription: ReturnType<typeof supabaseClient['channel']>;
 
     const fetchFriendships = async () => {
       dispatch({ type: "FETCH_START" });
