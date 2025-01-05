@@ -1,4 +1,5 @@
 import { errorHandler } from "@/lib/helpers";
+import { Friendship } from "@/types/Interfaces";
 import { supabaseClient } from "@/utils/supabase/client";
 
 export const addFriendship = async (userId: string, friendId: string) => {
@@ -48,8 +49,9 @@ export const searchFriendships = async (userId:string) => {
                                     .select('*')
                                     .or(`user_id_1.eq.${userId},user_id_2.eq.${userId}`)
 
+
 return {
-    data,
+    data: data as Friendship[],
     errorMessage: error && error.code && errorHandler(error.message),
 }
 }

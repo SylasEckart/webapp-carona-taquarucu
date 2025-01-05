@@ -12,7 +12,7 @@ export const useFriendship = (userId: string, dispatch: React.Dispatch<Friendshi
     const fetchFriendships = async () => {
       dispatch({ type: "FETCH_START" });
       try {
-        const { data, errorMessage } = await searchFriendships(userId) as { data: Friendship[]; errorMessage: string };
+        const { data, errorMessage } = await searchFriendships(userId)
         if (errorMessage) {
           dispatch({ type: "FETCH_ERROR", payload: errorMessage });
           return;
