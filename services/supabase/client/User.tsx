@@ -28,7 +28,7 @@ export const getAllUsersButMe = async (userEmail?: string) => {
   }
 
   // Filter out the current user
-  const typedData = data as { user_id: string; name: string; email: string;}[];
+  const typedData = data as unknown as  { user_id: string; name: string; email: string;}[];
   const filteredData = typedData?.filter((user) => user.email !== userEmail) || [];
   return { data: filteredData, error: null };
 };
