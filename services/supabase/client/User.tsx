@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // import { errorHandler } from "@/lib/helpers";v
 import { supabaseClient } from "@/utils/supabase/client";
-import { User } from "@/types/Interfaces";
 
 export const fetchUserData = async (email:string) => {
 
@@ -9,7 +7,7 @@ export const fetchUserData = async (email:string) => {
                                 .from('users')
                                 .select('*')
                                 .eq('email',email)
-                                .single() as {data: User, error: any};
+                                .single() 
 
     return {data, error};
 }
@@ -19,12 +17,12 @@ export const getAllUsersButMe = async (userEmail?: string) => {
     
     const { data, error } = await supabaseClient
                                 .from('users')
-                                .select('user_id,name,email')
+                                .select('user_id,name,email') 
     
 
     if(error) throw error;
 
-    const filteredData = data && data.filter(user=>user.email !== userEmail)
+    const filteredData = data as unknown as {email:string,name:string,user_id:string}[] && data.filter(user=>user.email !== userEmail)
     return {data:filteredData};
 }
 
