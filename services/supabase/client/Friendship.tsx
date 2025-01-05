@@ -50,6 +50,6 @@ export const searchFriendships = async (userId:string) => {
 
 return {
     data,
-    errorMessage: error && error.code && errorHandler(error.code),
+    errorMessage: error && error.code && errorHandler(error.message),
 }
 }
