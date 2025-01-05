@@ -10,7 +10,7 @@ import { useFriendshipContext } from '../context/FriendshipContext';
 export default function SocialPage() {
   const { isLoading: appLoading, listUsers } = useAppContext();
   const { user, isLoading: userLoading } = useUserContext();
-  const { isLoading: friendsLoading, friendships } = useFriendshipContext();
+  const { isLoading: friendsLoading, friendships,dispatch } = useFriendshipContext();
 
   const updatedUsers = useMemo(() => {
     const friendshipMap = new Map(
@@ -49,6 +49,7 @@ export default function SocialPage() {
         <Card elevation={0} sx={{ my: 2, borderRadius: 4 }}>
           <SocialFriendsList
             initialUsers={updatedUsers}
+            dispatch={dispatch}
             myUserId={user.user_id}
           />
         </Card>

@@ -21,6 +21,7 @@ export interface ApiResponse {
 export const handleApiCall = async (
     apiFunction: (...args: any[]) => Promise<ApiResponse | null>,
     setLoading: Dispatch<SetStateAction<boolean>>,
+    callback: (...args: any[]) => void,
     ...args: any[]
   ): Promise<ApiResponse> => {
     setLoading(true);
@@ -29,6 +30,7 @@ export const handleApiCall = async (
       if (response === null) return { data: null, errorMessage: "An unexpected error occurred." };
       
       const { data, errorMessage } = response;
+      if(data) callback(data);
       return { data, errorMessage };
     } catch (error) {
       console.error("api erro:", error);
