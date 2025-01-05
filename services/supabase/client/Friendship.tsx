@@ -51,7 +51,7 @@ export const searchFriendships = async (userId:string) => {
 
 
 return {
-    data: data as Friendship[],
+    data: data as unknown as Friendship[],
     errorMessage: error && error.code && errorHandler(error.message),
 }
 }
