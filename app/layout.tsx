@@ -62,7 +62,7 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-      <LayoutClient email={data?.user?.email}>{children}</LayoutClient>
+      <LayoutClient user={data?.user || undefined}>{children}</LayoutClient>
       </ThemeProvider>
       </body>
     </html>
