@@ -5,6 +5,7 @@ import React, { createContext, useContext, useState, ReactNode, Dispatch, SetSta
 
 
 export type ListUsers = {
+  email?: string;
   name?: string;
   friendships?: string[];
   user_id?: string;
