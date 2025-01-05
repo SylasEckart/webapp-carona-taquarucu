@@ -1,4 +1,5 @@
 // import { errorHandler } from "@/lib/helpers";v
+import { User } from "@/types/Interfaces";
 import { supabaseClient } from "@/utils/supabase/client";
 
 export const fetchUserData = async (email:string) => {
@@ -9,7 +10,7 @@ export const fetchUserData = async (email:string) => {
                                 .eq('email',email)
                                 .single() 
 
-    return {data, error};
+    return {data: data as unknown as User, error};
 }
 
 
