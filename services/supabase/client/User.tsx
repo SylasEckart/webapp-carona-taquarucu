@@ -23,14 +23,14 @@ export const getAllUsersButMe = async (userEmail?: string) => {
     
 
     if(error) throw error;
-    const filteredData = data.filter(user=>user.email !== userEmail)
+
+    const filteredData = data && data.filter(user=>user.email !== userEmail)
     return {data:filteredData};
 }
 
 
 
 export const setCurrentUserLocation = async (email:string, location: {lat:number,lng:number}) => {
-    console.log('location',location)
 
     const {data, error } = await supabaseClient
                                 .from('users')
@@ -39,7 +39,6 @@ export const setCurrentUserLocation = async (email:string, location: {lat:number
                                 })
                                 .eq('email',email)
                                 .select('*')
-    console.log('error',error,data)
     return {data,error};
 }
 
