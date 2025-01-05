@@ -22,8 +22,8 @@ export const getAllUsersButMe = async (userEmail?: string) => {
     
 
     if(error) throw error;
-
-    const filteredData = data as unknown as {email:string,name:string,user_id:string}[] && data.filter(user=>user.email !== userEmail)
+    const typedData = data as unknown as {email:string,name:string,user_id:string}[]
+    const filteredData = typedData && data.filter(user=>user.email !== userEmail)
     return {data:filteredData};
 }
 
