@@ -4,7 +4,6 @@ import { errorHandler } from "@/lib/helpers";
 export const fetchRetries = (url: string, options: RequestInit = {}, retries: number): Promise<any> =>
     fetch(url, options)
       .then((res) => {
-        console.log('res',res)
         if (res.ok) {
           return res.json()
         }
