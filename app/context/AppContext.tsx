@@ -1,15 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { getAllUsers } from '@/services/supabase/client/User';
+import { getAllUsersButMe } from '@/services/supabase/client/User';
 import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction, useEffect } from 'react';
 
 
 export type ListUsers = {
-  name: string;
+  name?: string;
   friendships: any[];
   user_id: string;
+  isSender?: boolean;
   isFriend?: boolean;
+  isPending?: boolean;
+  friendshipId?: string;
 }
 interface AppContextProps {
   isOnline: boolean;
@@ -35,13 +38,14 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children,userEmail }) 
   const [pwaStatus, setPwaStatus] = useState<'installed' | 'not-installed' | 'installing'>('not-installed');
   const [listUsers,setListUsers] = useState<any[]>([]);
   const [isLoading, setLoading] = useState<boolean>(true);
+ 
 
  useEffect(() => {
         let isMounted = true;
     
         const fetchData = async () => {
           try {
-            const { data } = await getAllUsers(userEmail);
+            const { data } = await getAllUsersButMe(userEmail);
             if (isMounted) setListUsers(data);
           } catch (error) {
             console.error('Fetch user data failed:', error);

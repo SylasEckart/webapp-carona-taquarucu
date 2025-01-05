@@ -18,6 +18,7 @@ export enum RequestType {
   
   // User Interface
 export interface User {
+    isPending?: boolean;
     isFriend?: boolean;
     user_id: string;
     name: string;
@@ -28,7 +29,7 @@ export interface User {
       type: 'Point';
       coordinates: [number, number];
     };
-    friendships: string[] // friendship_id: string;
+    friendships: string[] // userIds: string;
   }
   
   // Vehicle Interface
@@ -101,8 +102,11 @@ export interface Request {
   
   // Friendship Interface
 export interface Friendship {
+    sender: string;
     friendship_id: string;
     users: [string, string];
+    user_id_1:string;
+    user_id_2:string;
     status: string;
     created_at: string; // ISO string format for datetime
     confirmed_at: string | null; // ISO string format for datetime
