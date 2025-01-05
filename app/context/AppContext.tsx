@@ -50,7 +50,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children,userEmail }) 
               console.error('Fetch user data failed:', error);
               return;
             }
-            if (isMounted && data) setListUsers(data);
+            if (isMounted && data) setListUsers(data as unknown as ListUsers[]);
           } catch (error) {
             console.error('Fetch user data failed:', error);
           } finally {
