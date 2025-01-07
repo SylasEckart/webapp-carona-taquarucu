@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { getAllUsersButMe } from '@/services/supabase/client/User';
@@ -6,9 +5,10 @@ import React, { createContext, useContext, useState, ReactNode, Dispatch, SetSta
 
 
 export type ListUsers = {
+  email?: string;
   name?: string;
-  friendships: any[];
-  user_id: string;
+  friendships?: string[];
+  user_id?: string;
   isSender?: boolean;
   isFriend?: boolean;
   isPending?: boolean;
@@ -21,7 +21,7 @@ interface AppContextProps {
   setTheme: Dispatch<SetStateAction<'light' | 'dark'>>;
   pwaStatus: 'installed' | 'not-installed' | 'installing';
   setPwaStatus: Dispatch<SetStateAction<'installed' | 'not-installed' | 'installing'>>;
-  listUsers: any[];
+  listUsers: ListUsers[];
   isLoading: boolean;
 }
 
@@ -36,7 +36,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children,userEmail }) 
   const [isOnline, setIsOnline] = useState<boolean>(true);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [pwaStatus, setPwaStatus] = useState<'installed' | 'not-installed' | 'installing'>('not-installed');
-  const [listUsers,setListUsers] = useState<any[]>([]);
+  const [listUsers,setListUsers] = useState<ListUsers[]>([]);
   const [isLoading, setLoading] = useState<boolean>(true);
  
 
@@ -45,8 +45,12 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children,userEmail }) 
     
         const fetchData = async () => {
           try {
-            const { data } = await getAllUsersButMe(userEmail);
-            if (isMounted) setListUsers(data);
+            const { data,error } = await getAllUsersButMe(userEmail);
+            if (error) {
+              console.error('Fetch user data failed:', error);
+              return;
+            }
+            if (isMounted && data) setListUsers(data as unknown as ListUsers[]);
           } catch (error) {
             console.error('Fetch user data failed:', error);
           } finally {

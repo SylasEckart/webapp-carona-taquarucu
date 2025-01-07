@@ -20,20 +20,22 @@ import { ListUsers } from '../context/AppContext';
 import SocialTabs from './SocialTabs';
 import { CheckRounded, Clear, HourglassBottom} from '@mui/icons-material';
 import useFriendshipAction from '@/hooks/useFriendshipAction';
+import { FriendshipAction } from '../reducers/friendshipReducer';
 
 interface SocialFriendsListProps {
   initialUsers?: ListUsers[];
   initialFriends?: ListUsers[];
   myUserId: string;
+  dispatch: React.Dispatch<FriendshipAction>;
 }
 
-type FriendshipAction =  "Add" | "Delete" | "Confirm"
+type FriendshipActionRedux =  "Add" | "Delete" | "Confirm"
 
 
 // Extracted reusable user item component
 const UserListItem = ({ user, onFriendshipToggle }: { 
   user: ListUsers; 
-  onFriendshipToggle: (userId: string,type?: FriendshipAction  ) => void;
+  onFriendshipToggle: (userId: string,type?: FriendshipActionRedux  ) => void;
 }) => (
   <ListItem key={user.user_id} alignItems="flex-start">
     <ListItemAvatar>
@@ -57,7 +59,7 @@ const UserListItem = ({ user, onFriendshipToggle }: {
           user.isFriend ? onFriendshipToggle(user?.friendshipId || "","Delete") : 
           user.isPending && !user.isSender ? ()=> {} :
           user.isPending ? onFriendshipToggle(user?.friendshipId || "","Confirm") : 
-          onFriendshipToggle(user.user_id) 
+          onFriendshipToggle(user.user_id || "") 
         }
       sx={{
         minWidth: 40,
@@ -111,10 +113,11 @@ const UserList = ({ users, onFriendshipToggle }: {
 
 export function SocialFriendsList({ 
   initialUsers = [],
+  dispatch,
   myUserId 
 }: SocialFriendsListProps) {
 
-  const { sendFriendship,toggleFriendship } = useFriendshipAction()
+  const { sendFriendship,toggleFriendship } = useFriendshipAction(dispatch)
 
   const [users, setUsers] = useState<ListUsers[]>([...initialUsers]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -131,7 +134,7 @@ export function SocialFriendsList({
     setSearchTerm(e.target.value);
   }, []);
 
-  const handleFriendshipToggle = useCallback((targetUserId: string,type: FriendshipAction = "Add") => {
+  const handleFriendshipToggle = useCallback((targetUserId: string,type: FriendshipActionRedux = "Add") => {
     if(type === "Add") {
       sendFriendship(myUserId, targetUserId);
     }

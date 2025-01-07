@@ -2,7 +2,7 @@
 
 import React, { useMemo } from 'react';
 import { Box, Card, Fade } from '@mui/material';
-import { SocialFriendsList } from './SocialList';
+import { SocialFriendsList } from './socialList';
 import { useAppContext } from '../context/AppContext';
 import { useUserContext } from '../context/UserContext';
 import { useFriendshipContext } from '../context/FriendshipContext';
@@ -10,7 +10,7 @@ import { useFriendshipContext } from '../context/FriendshipContext';
 export default function SocialPage() {
   const { isLoading: appLoading, listUsers } = useAppContext();
   const { user, isLoading: userLoading } = useUserContext();
-  const { isLoading: friendsLoading, friendships } = useFriendshipContext();
+  const { isLoading: friendsLoading, friendships,dispatch } = useFriendshipContext();
 
   const updatedUsers = useMemo(() => {
     const friendshipMap = new Map(
@@ -26,7 +26,7 @@ export default function SocialPage() {
       );
 
       if (!friendship) {
-        return { ...user, isFriend: false, isPending: false, friendshipId: null };
+        return { ...user, isFriend: false, isPending: false, friendshipId: undefined };
       }
 
       const isPending = friendship.status === "pendente";
@@ -49,6 +49,7 @@ export default function SocialPage() {
         <Card elevation={0} sx={{ my: 2, borderRadius: 4 }}>
           <SocialFriendsList
             initialUsers={updatedUsers}
+            dispatch={dispatch}
             myUserId={user.user_id}
           />
         </Card>
