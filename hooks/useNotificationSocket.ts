@@ -23,7 +23,7 @@ export const useNotificationSocket = (userId: string, dispatch:React.Dispatch<No
           dispatch({ type: FETCH_ERROR , payload: errorMessage });
           return;
         }
-        dispatch({ type: FETCH_SUCCESS, payload: data as HeaderNotification[] || [] });
+        dispatch({ type: FETCH_SUCCESS, payload: data as unknown as HeaderNotification[] || [] });
       } catch (error) {
         console.log("Failed to fetch notifications", error);
         dispatch({ type: FETCH_ERROR, payload: "Failed to fetch notifications." });
