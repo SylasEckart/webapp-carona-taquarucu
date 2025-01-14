@@ -38,7 +38,7 @@ const useFriendshipAction = (dispatch: React.Dispatch<FriendshipAction>,userId?:
         dispatch({ type: FETCH_ERROR, payload: errorMessage });
         return { errorMessage };
       }
-      dispatch({ type: ADD_FRIENDSHIP, payload: data as Friendship });
+      dispatch({ type: ADD_FRIENDSHIP, payload: data as unknown as Friendship });
       return { errorMessage };
     } catch (error) {
       console.error("Failed to add:", error);
