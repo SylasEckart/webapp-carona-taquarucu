@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { supabaseClient } from "@/utils/supabase/client";
 
 import { getNotifications } from "@/services/supabase/client/Notifications";
-import { NotificationAction, NotificationActionType } from "@/app/reducers/notificationsReducer";
+import { HeaderNotification, NotificationAction, NotificationActionType } from "@/app/reducers/notificationsReducer";
 
 const {
   FETCH_START,
@@ -23,10 +23,10 @@ export const useNotificationSocket = (userId: string, dispatch:React.Dispatch<No
           dispatch({ type: FETCH_ERROR , payload: errorMessage });
           return;
         }
-        dispatch({ type: FETCH_SUCCESS, payload: data || [] });
+        dispatch({ type: FETCH_SUCCESS, payload: data as unknown as HeaderNotification[] || [] });
       } catch (error) {
-        console.log("Failed to fetch friendships", error);
-        dispatch({ type: FETCH_ERROR, payload: "Failed to fetch friendships." });
+        console.log("Failed to fetch notifications", error);
+        dispatch({ type: FETCH_ERROR, payload: "Failed to fetch notifications." });
       }
     };
 

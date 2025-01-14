@@ -6,6 +6,7 @@ import {
   removeFriendship,
   searchFriendships,
 } from "@/services/supabase/client/Friendship";
+import { Friendship } from "@/types/Interfaces";
 import React, { useEffect } from "react";
 
 
@@ -37,7 +38,7 @@ const useFriendshipAction = (dispatch: React.Dispatch<FriendshipAction>,userId?:
         dispatch({ type: FETCH_ERROR, payload: errorMessage });
         return { errorMessage };
       }
-      dispatch({ type: ADD_FRIENDSHIP, payload: data });
+      dispatch({ type: ADD_FRIENDSHIP, payload: data as unknown as Friendship });
       return { errorMessage };
     } catch (error) {
       console.error("Failed to add:", error);
@@ -80,7 +81,7 @@ const useFriendshipAction = (dispatch: React.Dispatch<FriendshipAction>,userId?:
         dispatch({ type: FETCH_ERROR, payload: errorMessage });
         return { errorMessage };
       }
-      dispatch({ type: UPDATE_FRIENDSHIP, payload: data });
+      dispatch({ type: UPDATE_FRIENDSHIP, payload: data as unknown as Friendship});
       return { errorMessage };
     } catch (error) {
       console.error("Failed to delete:", error);
