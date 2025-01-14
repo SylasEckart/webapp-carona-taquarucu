@@ -11,14 +11,18 @@ export const addFriendship = async (userId: string, friendId: string) => {
   }
 
   try {
-    const { data, error } = await supabaseClient.from("friendships").insert({
+    const { data, error } = await supabaseClient
+      .from("friendships")
+      .insert({
       user_id_1: userId < friendId ? userId : friendId,
       user_id_2: friendId > userId ? friendId : userId,
       status: "pendente",
       created_at: new Date().toISOString(),
       confirmed_at: null,
       sender: userId,
-    });
+      })
+      .select("*")
+      .single();
 
     return {
       data,
@@ -55,21 +59,25 @@ export const removeFriendship = async (friendship_id: string) => {
 /**
  * Confirm a friendship by ID
  */
-export const confirmFriendship = async (friendship_id: string) => {
+export const confirmFriendship = async (friendship_id: string, userId:string) => {
   if (!friendship_id) {
     return { errorMessage: "Friendship ID is required." };
   }
 
   try {
-    const { error } = await supabaseClient
+    const { data, error } = await supabaseClient
       .from("friendships")
       .update({
-        status: "confirmada",
-        confirmed_at: new Date().toISOString(),
+      sender: userId,
+      status: "confirmada",
+      confirmed_at: new Date().toISOString(),
       })
-      .eq("friendship_id", friendship_id);
+      .eq("friendship_id", friendship_id)
+      .select("*")
+      .single();
 
     return {
+      data,
       errorMessage: error ? errorHandler(error.message) : null,
     };
   } catch (error) {

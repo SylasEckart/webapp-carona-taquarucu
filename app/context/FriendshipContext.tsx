@@ -1,8 +1,8 @@
 import React, { createContext, useReducer, useContext, useMemo, ReactNode } from "react";
 import { Friendship } from "@/types/Interfaces";
 import { FriendshipAction, friendshipReducer,initialFriendshipState } from "../reducers/friendshipReducer";
-import { useFriendship } from "@/hooks/useFriendship";
 
+import useFriendshipAction from "@/hooks/useFriendshipAction";
 interface FriendshipContextProps {
   friendships: Friendship[];
   isLoading: boolean;
@@ -14,11 +14,8 @@ const FriendshipContext = createContext<FriendshipContextProps | undefined>(unde
 
 export const FriendshipProvider: React.FC<{ children: ReactNode; userId: string }> = ({ children, userId }) => {
   const [state, dispatch] = useReducer(friendshipReducer, initialFriendshipState);
-
-  console.log('state',state);
   
-  useFriendship(userId, dispatch);
-
+  useFriendshipAction(dispatch,userId);
 
   const contextValue = useMemo(
     () => ({

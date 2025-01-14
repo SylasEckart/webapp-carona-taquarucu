@@ -21,9 +21,8 @@ import { useRideModal } from '@/hooks/useRideModal';
 // import useLocationActions from '@/hooks/useLocationAction';
 
 export default function Dashboard() {
-  const { location: locationObj } = useLocationContext();
+  const { state:{location} } = useLocationContext();
   const {user} = useUserContext();
-  const location = locationObj?.location;
   const [pickup, setPickup] = useState(location);
   const [destination, setDestination] = useState('');
   const [rideOptions] = useState([
