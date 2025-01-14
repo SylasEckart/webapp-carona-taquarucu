@@ -1,17 +1,24 @@
-import { FriendshipAction } from "@/app/reducers/friendshipReducer";
-import { ApiResponse, handleApiCall } from "@/lib/helpers";
+import { FriendshipAction, FriendshipActionType } from "@/app/reducers/friendshipReducer";
+import { ApiResponse} from "@/lib/helpers";
 import {
   addFriendship,
   confirmFriendship,
   removeFriendship,
+  searchFriendships,
 } from "@/services/supabase/client/Friendship";
-import { Friendship } from "@/types/Interfaces";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 
-type FriendshipActionType = "Delete" | "Confirm";
 
-const useFriendshipAction = (dispatch: React.Dispatch<FriendshipAction>) => {
-  const [loading, setLoading] = useState<boolean>(false);
+const useFriendshipAction = (dispatch: React.Dispatch<FriendshipAction>,userId?:string) => {
+  const {
+    ADD_FRIENDSHIP,
+    DELETE_FRIENDSHIP,
+    UPDATE_FRIENDSHIP,
+    FETCH_START,
+    FETCH_SUCCESS,
+    FETCH_ERROR,
+  } = FriendshipActionType;
+
 
   /**
    * Sends a friendship request to the specified friend.
@@ -23,14 +30,20 @@ const useFriendshipAction = (dispatch: React.Dispatch<FriendshipAction>) => {
     userId: string,
     friendId: string
   ): Promise<ApiResponse> => {
-    const { data, errorMessage } = await handleApiCall(
-      addFriendship,
-      setLoading,
-      (data: Friendship) => dispatch({ type: "ADD_FRIENDSHIP", payload: data }),
-      userId,
-      friendId
-    );
-    return { data, errorMessage };
+
+    try {
+      const { data,errorMessage } = await addFriendship(userId as string,friendId);
+      if (errorMessage) {
+        dispatch({ type: FETCH_ERROR, payload: errorMessage });
+        return { errorMessage };
+      }
+      dispatch({ type: ADD_FRIENDSHIP, payload: data });
+      return { errorMessage };
+    } catch (error) {
+      console.error("Failed to add:", error);
+      dispatch({ type: FETCH_ERROR, payload: "Failed to add friendships." });
+      return { errorMessage: "Failed to add friendship." };
+    }
   };
 
   /**
@@ -41,30 +54,68 @@ const useFriendshipAction = (dispatch: React.Dispatch<FriendshipAction>) => {
    */
   const toggleFriendship = async (
     friendshipId: string,
-    type: FriendshipActionType
+    type: "Delete" | "Confirm",
+    userId?: string
   ): Promise<ApiResponse> => {
+
     if (type === "Delete") {
-      
-      const { data, errorMessage } = await handleApiCall(
-        removeFriendship,
-        setLoading,
-        ()=>{},
-        friendshipId
-      );
-      dispatch({ type: "DELETE_FRIENDSHIP", payload: friendshipId });
-      return { data, errorMessage };
+        try {
+          const { errorMessage } = await removeFriendship(friendshipId);
+          if (errorMessage) {
+            dispatch({ type: FETCH_ERROR, payload: errorMessage });
+            return { errorMessage };
+          }
+          dispatch({ type: DELETE_FRIENDSHIP, payload: friendshipId });
+          return { errorMessage };
+        } catch (error) {
+          console.error("Failed to delete:", error);
+          dispatch({ type: FETCH_ERROR, payload: "Failed to fetch friendships." });
+          return { errorMessage: "Failed to delete friendship." };
+        }
     }
 
-    const { data, errorMessage } = await handleApiCall(
-      confirmFriendship,
-      setLoading,
-      (data: Friendship) => dispatch({ type: "UPDATE_FRIENDSHIP", payload: data }),
-      friendshipId
-    );
-    return { data, errorMessage };
+    try {
+      const { data,errorMessage } = await confirmFriendship(friendshipId,userId as string);
+      if (errorMessage) {
+        dispatch({ type: FETCH_ERROR, payload: errorMessage });
+        return { errorMessage };
+      }
+      dispatch({ type: UPDATE_FRIENDSHIP, payload: data });
+      return { errorMessage };
+    } catch (error) {
+      console.error("Failed to delete:", error);
+      dispatch({ type: FETCH_ERROR, payload: "Failed to fetch friendships." });
+      return { errorMessage: "Failed to delete friendship." };
+    }
+  
   };
+  
+  useEffect(() => {
+      if (!userId) {
+        return;
+      }
+  
+      const fetchFriendships = async () => {
+        dispatch({ type: FETCH_START });
+        try {
+          const { data, errorMessage } = await searchFriendships(userId);
+          if (errorMessage) {
+            dispatch({ type: FETCH_ERROR, payload: errorMessage });
+            return;
+          }
+          dispatch({ type: FETCH_SUCCESS, payload: data || [] });
+        } catch (error) {
+          console.error("Failed to fetch friendships:", error);
+          dispatch({ type: FETCH_ERROR, payload: "Failed to fetch friendships." });
+        }
+      };
+  
+      fetchFriendships();
+  
+    }, [userId, dispatch]);
+  
 
-  return { toggleFriendship, sendFriendship, loading };
+  return { toggleFriendship, sendFriendship };
 };
 
 export default useFriendshipAction;

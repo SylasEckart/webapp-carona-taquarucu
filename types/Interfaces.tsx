@@ -15,6 +15,13 @@ export enum RequestType {
     InTransit = 'in_transit',
     Scheduled = 'scheduled'
   }
+
+export enum Status {
+  Info = "info",
+  Warning = "warning",
+  Error = "error",
+  Success = "success"
+}
   
   // User Interface
 export interface User {
@@ -30,6 +37,7 @@ export interface User {
       coordinates: [number, number];
     };
     friendships: string[] // userIds: string;
+    notifications: string[] // notificationIds: string;
   }
   
   // Vehicle Interface

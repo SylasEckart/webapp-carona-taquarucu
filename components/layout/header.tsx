@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // src/components/Header.tsx
 import React, { useState } from 'react';
-import { AppBar, Toolbar, IconButton, Typography,  Menu, MenuItem, useScrollTrigger } from '@mui/material';
-import {  Brightness4 as Brightness4Icon, Brightness7 as Brightness7Icon,  Notifications as NotificationsIcon } from '@mui/icons-material';
+import { AppBar, Toolbar, IconButton, Typography,  Menu, MenuItem, useScrollTrigger, Badge } from '@mui/material';
+import {  Brightness4 as Brightness4Icon, Brightness7 as Brightness7Icon,  } from '@mui/icons-material';
+import { Notifications as NotificationsIcon } from '@mui/icons-material';
 import CustomAvatar from './CustomAvatar';
 import { logout } from '@/services/supabase/client/Auth';
 import AppLoader from '../ui/AppLoader';
@@ -38,16 +39,29 @@ function ElevationScroll(props: Props) {
 
 
 export default function Header({ toggleTheme, isDarkMode, router, }: HeaderProps) {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null); 
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement | SVGSVGElement>(null); 
 
   const { user, isLoading} = useUserContext();
+  
+  const [menuType, setMenuType] = useState<string | null>(null);
 
-  const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => {
+  interface HandleOpenMenuEvent {
+    currentTarget: HTMLElement | SVGSVGElement;
+  }
+
+  interface HandleOpenMenu {
+    (event: HandleOpenMenuEvent, type: string): void;
+  }
+
+  const handleOpenMenu: HandleOpenMenu = (event, type) => {
     setAnchorEl(event.currentTarget);
+    setMenuType(type);
   };
 
-  const handleClose = () => {
+  const handleCloseMenu = () => {
+    // if(menuType === 'notifications') dispatch({type: NotificationActionType.CLEAN_NOTIFICATIONS});
     setAnchorEl(null);
+    setMenuType(null);
   };
 
   const handleLogout = async() => {
@@ -60,6 +74,9 @@ export default function Header({ toggleTheme, isDarkMode, router, }: HeaderProps
   if(isLoading) return <AppLoader message="Carregando" />
   if(!user) return null;
 
+  console.log('user:', user);
+
+
   // const {isOpen,title,onClose,contentType} = modal;
   return (
     <ElevationScroll>
@@ -70,27 +87,42 @@ export default function Header({ toggleTheme, isDarkMode, router, }: HeaderProps
           Carona Taquaruçu
         </Typography>
 
-        <IconButton color="inherit" onClick={() => console.log('Notificações')}>
-          <NotificationsIcon />
-        </IconButton>
+       
+        <Badge badgeContent={user.notifications?.length} color="error">
+          <NotificationsIcon color="inherit" onClick={(event) => handleOpenMenu(event, 'notifications')} />
+        </Badge>
 
-        <IconButton color="inherit" onClick={toggleTheme}>
+        <IconButton className='ml-2' color="inherit" onClick={toggleTheme}>
           {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>
 
-        <IconButton color="inherit" onClick={handleAvatarClick}>
+       
+        <IconButton color="inherit" onClick={(event) => handleOpenMenu(event, 'avatar')}>
           <CustomAvatar stringAvatar={user.name} />
         </IconButton>
         <Menu
+          key={menuType}
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
-          onClose={handleClose}
+          onClose={handleCloseMenu}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
-          <MenuItem onClick={handleClose}>Meu Perfil</MenuItem>
-          <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          {menuType === 'notifications' && (
+              user.notifications.length > 0 ? user.notifications.map((notification, index) => (
+               <>
+                <MenuItem key={index} onClick={handleCloseMenu}>{notification}</MenuItem>
+                </>
+              )) : <MenuItem key={'nenhuma'} onClick={handleCloseMenu}>Nenhuma notificação</MenuItem>
+          )}
+          {menuType === 'avatar' && (
+           <>
+            <MenuItem onClick={handleCloseMenu}>Meu Perfil</MenuItem>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+           </>
+          )}
         </Menu>
+        
       </Toolbar>
     </AppBar>
     </ElevationScroll>
