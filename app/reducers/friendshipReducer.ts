@@ -7,13 +7,22 @@ type FriendshipState = {
   error: string | null;
 };
 
+export enum FriendshipActionType {
+  FETCH_START = "FETCH_START",
+  FETCH_SUCCESS = "FETCH_SUCCESS",
+  FETCH_ERROR = "FETCH_ERROR",
+  ADD_FRIENDSHIP = "ADD_FRIENDSHIP",
+  UPDATE_FRIENDSHIP = "UPDATE_FRIENDSHIP",
+  DELETE_FRIENDSHIP = "DELETE_FRIENDSHIP",
+}
+
 export type FriendshipAction =
-  | { type: "FETCH_START" }
-  | { type: "FETCH_SUCCESS"; payload: Friendship[] }
-  | { type: "FETCH_ERROR"; payload: string }
-  | { type: "ADD_FRIENDSHIP"; payload: Friendship }
-  | { type: "UPDATE_FRIENDSHIP"; payload: Friendship }
-  | { type: "DELETE_FRIENDSHIP"; payload: string };
+  | { type: FriendshipActionType.FETCH_START }
+  | { type: FriendshipActionType.FETCH_SUCCESS; payload: Friendship[] }
+  | { type: FriendshipActionType.FETCH_ERROR; payload: string }
+  | { type: FriendshipActionType.ADD_FRIENDSHIP; payload: Friendship }
+  | { type: FriendshipActionType.UPDATE_FRIENDSHIP; payload: Friendship }
+  | { type: FriendshipActionType.DELETE_FRIENDSHIP; payload: string };
 
 export const initialFriendshipState: FriendshipState = {
     friendships: [],

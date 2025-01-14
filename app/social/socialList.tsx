@@ -114,7 +114,7 @@ const UserList = ({ users, onFriendshipToggle }: {
 export function SocialFriendsList({ 
   initialUsers = [],
   dispatch,
-  myUserId 
+  myUserId,
 }: SocialFriendsListProps) {
 
   const { sendFriendship,toggleFriendship } = useFriendshipAction(dispatch)
@@ -142,7 +142,7 @@ export function SocialFriendsList({
       toggleFriendship(targetUserId,"Delete")
     }
     if(type === "Confirm"){
-      toggleFriendship(targetUserId, 'Confirm');
+      toggleFriendship(targetUserId, 'Confirm', myUserId);
     } 
     
   }, [myUserId, sendFriendship]);
@@ -214,7 +214,6 @@ export function SocialFriendsList({
         ListFriendsComponent={FriendsList} 
         ListPendingsComponent={PendingsList}
         retrieveTabValue={setSelectedTab}
-
       />
     </Paper>
   );

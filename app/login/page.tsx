@@ -13,18 +13,20 @@ import {motion} from 'framer-motion';
 import { LoginMapComponent } from '@/components/maps/MapWrapper';
 import { taquarucuSquarelocation } from '@/types/constants';
 import { login, signUp } from '@/services/supabase/client/Auth';
+import { LocationActionType } from '../reducers/locationReducer';
 
 
 export default function LoginPage() {
   const router = useRouter();
-  const { setLocation,location} = useLocationContext();
-  const myLocation = location?.location;
+  const { state,dispatch} = useLocationContext();
+  const myLocation = state.location;
+  if(myLocation) dispatch({type: LocationActionType.SET_LOCATION, payload: myLocation});
 
   // if(!contextLoading && !myLocation) return null;
 
   const { theme, toggleTheme } = useDarkMode();
   const { isLogin, formData, error, handleInputChange, validateFields, toggleLoginMode, setError,setMessage,message } = useAuthForm({ isLogin: true });
-  const { locationVerified, verifyLocation } = useLocationVerification(setLocation);
+  const { locationVerified, verifyLocation } = useLocationVerification();
 
   const [loading, setLoading] = React.useState(false);
 
